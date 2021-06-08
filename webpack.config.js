@@ -5,6 +5,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require("terser-webpack-plugin");
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 const isProduction = process.env.ENV_NODE_MODE === 'production';
 const isDevelopment = !isProduction;
@@ -29,6 +30,7 @@ module.exports = {
             new CssMinimizerPlugin()
         ],
     },
+    devtool: isDevelopment ? 'source-map' : false,
     devServer: {
         port: 7000
     },
@@ -85,6 +87,9 @@ module.exports = {
                 from: path.resolve(__dirname,'src/favicon.ico'),
                 to: path.resolve(__dirname,'dist')
             }]
+        }),
+        new ESLintPlugin({
+            extensions: [`js`]
         })
     ]
 }
