@@ -10,6 +10,116 @@ const ESLintPlugin = require('eslint-webpack-plugin');
 const isProduction = process.env.ENV_NODE_MODE === 'production';
 const isDevelopment = !isProduction;
 
+const getOptimization = () => {
+
+    return {
+        splitChunks:{
+            chunks: 'all'
+        },
+        minimize: isDevelopment,
+        minimizer: [
+            new TerserPlugin(),
+            new CssMinimizerPlugin()
+        ],
+    }
+}
+
+const getLoaders = () => {
+
+    const getJsLoaders = () => {
+
+        return [{
+            test: /\.m?js$/,
+            exclude: /node_modules/,
+            use: {
+              loader: "babel-loader",
+              options: {
+                presets: ['@babel/preset-env']
+              }
+            }
+        }];
+    }
+
+    const getStyleLoaders = () => {
+
+        return [{
+            test: '/\.css$/i',
+            use: [MiniCssExtractPlugin.loader, 'css-loader']
+        },
+        {
+            test: /\.s[ac]ss$/i,
+            use: [
+              MiniCssExtractPlugin.loader,
+              "css-loader",
+              {
+                loader: "sass-loader",
+                options: {
+                  // Prefer `dart-sass`
+                  implementation: require("sass"),
+                },
+              }
+            ]
+        }];
+    }
+
+    const getFileLoaders = () => {
+
+        return [{
+            test: /\.(png|svg|jpg|jpeg|gif)$/i,
+            use: ['file-loader']
+        }]
+    }
+
+    return [
+        ...getJsLoaders(),
+        ...getStyleLoaders(),
+        ...getFileLoaders()
+    ]
+}
+
+const getPlugins = () => {
+
+    const getPluginsDevelopment = () => {
+
+        return [
+            new ESLintPlugin({
+                extensions: [`js`]
+            })
+        ]
+    }
+
+    const getPluginsDefault = () => {
+
+        return [
+            new HTMLWebpackPlugin({
+                template: './index.html',
+                minify: {
+                    collapseWhitespace: isDevelopment
+                }
+            }),
+            new CleanWebpackPlugin(),
+            new MiniCssExtractPlugin({
+                filename:'[name].[contenthash].css'
+            }),
+            new CopyWebpackPlugin({
+                patterns:[
+                {
+                    from: path.resolve(__dirname,'src/favicon.ico'),
+                    to: path.resolve(__dirname,'dist')
+                }]
+            })
+        ]
+    }
+
+    if (isDevelopment) {
+        return [ ...getPluginsDefault() ,...getPluginsDevelopment() ];
+    }
+
+    return getPluginsDefault();
+}
+
+const sourceMap = isDevelopment ? 'source-map' : false;
+
 module.exports = {
     context: path.resolve(__dirname,'src'),
     mode: 'development',
@@ -20,76 +130,13 @@ module.exports = {
         filename: '[name].[contenthash].bundle.js',
         path: path.resolve(__dirname,'dist')
     },
-    optimization:{
-        splitChunks:{
-            chunks: 'all'
-        },
-        minimize: isDevelopment,
-        minimizer: [
-            new TerserPlugin(),
-            new CssMinimizerPlugin()
-        ],
-    },
-    devtool: isDevelopment ? 'source-map' : false,
+    optimization:getOptimization(),
+    devtool: sourceMap,
     devServer: {
         port: 7000
     },
     module: {
-        rules: [
-            {
-                test: /\.m?js$/,
-                exclude: /node_modules/,
-                use: {
-                  loader: "babel-loader",
-                  options: {
-                    presets: ['@babel/preset-env']
-                  }
-                }
-            },
-            {
-                test: '/\.css$/i',
-                use: [MiniCssExtractPlugin.loader, 'css-loader']
-            },
-            {
-                test: /\.s[ac]ss$/i,
-                use: [
-                  MiniCssExtractPlugin.loader,
-                  "css-loader",
-                  {
-                    loader: "sass-loader",
-                    options: {
-                      // Prefer `dart-sass`
-                      implementation: require("sass"),
-                    },
-                  }
-                ]
-            },
-            {
-                test: /\.(png|svg|jpg|jpeg|gif)$/i,
-                use: ['file-loader']
-            }
-        ]
+        rules: getLoaders()
     },
-    plugins: [
-        new HTMLWebpackPlugin({
-            template: './index.html',
-            minify: {
-                collapseWhitespace: isDevelopment
-            }
-        }),
-        new CleanWebpackPlugin(),
-        new MiniCssExtractPlugin({
-            filename:'[name].[contenthash].css'
-        }),
-        new CopyWebpackPlugin({
-            patterns:[
-            {
-                from: path.resolve(__dirname,'src/favicon.ico'),
-                to: path.resolve(__dirname,'dist')
-            }]
-        }),
-        new ESLintPlugin({
-            extensions: [`js`]
-        })
-    ]
+    plugins: getPlugins()
 }
