@@ -1,6 +1,10 @@
-import { MainComponent } from'./scripts/mainComponent';
+export class Main {
 
-const a = isNaN(a);
+    constructor() {
 
-const component = new MainComponent();
-component.setInfo('Hello webpack');
+    }
+
+    getSum = (a, b) => {
+        return a + b;
+    }
+}
