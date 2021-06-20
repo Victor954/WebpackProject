@@ -1,10 +1,11 @@
-export class Main {
+import { StrictMode } from "react";
+import ReactDOM from 'react-dom';
+import React from 'react';
+import { App } from './App';
 
-    constructor() {
-
-    }
-
-    getSum = (a, b) => {
-        return a + b;
-    }
-}
+ReactDOM.render(
+    <StrictMode>
+        <App />
+    </StrictMode>,
+    document.getElementById('app')
+);

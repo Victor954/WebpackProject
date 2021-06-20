@@ -5,7 +5,8 @@
         }
       },
     "presets": [
-        [
+      ["@babel/preset-react"],
+      [
           "@babel/preset-env",
           {
             "targets": 
@@ -17,5 +18,5 @@
             "corejs": "3.8"
           }
         ]
-      ]
+    ]
 }

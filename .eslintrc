@@ -1,6 +1,9 @@
 {
   "root": true,
-  "extends": ["eslint:recommended"],
+  "extends": [
+    "eslint:recommended" , 
+    "plugin:react/recommended"
+  ],
   "parser": "@babel/eslint-parser",
   "parserOptions": {
     "requireConfigFile": false
@@ -8,6 +11,7 @@
   "globals": {
     "window":true,
     "document": true,
-    "console": true
+    "console": true,
+    "require": true
   }
 }
