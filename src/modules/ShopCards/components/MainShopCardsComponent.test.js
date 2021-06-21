@@ -1,39 +1,69 @@
 import React from 'react';
-import ReactTestRenderer  from 'react-test-renderer';
 import { MainShopCardsComponent } from './MainShopCardsComponent';
 
-let componentInstance;
-let componentRenderer;
+import {configure , shallow , mount} from 'enzyme';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
+
+configure({ adapter: new Adapter() });
+
+let component;
+const setUp = (props) => shallow(<MainShopCardsComponent { ...props }/>);
 
 beforeEach(() => {
 
-    componentRenderer  = ReactTestRenderer.create(<MainShopCardsComponent />);
-    componentInstance = componentRenderer.root;
+    component = setUp();
 });
 
 afterEach(() => {
-    componentRenderer.unmount(<MainShopCardsComponent />);
-})
 
+    component.unmount();
+})
 
 describe('MainShopCardsComponent main functional', () => {
 
     test('component is rendering' , () => {
         
-        expect(componentInstance).not.toBeNull();
+        expect(component).toMatchSnapshot();
     });
 
     test('component is not contains void', () => {
 
-        expect(componentInstance.children.length).not.toBe(0);
+        expect(component.children().length).not.toBe(0);
+    });
+});
+
+describe('MainShopCardsComponent instance functional' , () => {
+
+    let instance;
+    const componentDidMountSpy = jest.spyOn(MainShopCardsComponent.prototype, 'componentDidMount')
+
+    beforeEach(() => {
+
+        instance = component.instance();
+    });
+    
+    afterEach(() => {
+        componentDidMountSpy.mockReset();
+    })
+
+    test('handleLoadData is changing state.postData' , () => {
+        const data = [1, 2, 3, 4, 5];
+
+        instance.handleLoadData(data);
+        expect(component.state().postData).toEqual(data);
     });
 
-    test('test' , () => {
+    test('componentDidMountSpy called once time' , () => {
+        expect(componentDidMountSpy).toBeCalledTimes(1);
+    });
 
-        const changeSize = jest.fn();
-        const handleClick = jest.spyOn(React, "useState");
-        handleClick.mockImplementation((size => [size, changeSize]));
+    test('when call componentDidMountSpy called handleLoadData once time' , () => {
 
-        expect(changeSize).toBeTruthy();
+        const handleLoadDataSpy = jest.spyOn(instance, 'handleLoadData');
+        instance.handleLoadData([]);
+
+        component.update();
+
+        expect(handleLoadDataSpy).toHaveBeenCalledTimes(1);
     });
 });

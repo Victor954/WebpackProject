@@ -4,7 +4,7 @@ import { MainShopCardsComponent } from './modules/ShopCards/components/MainShopC
 export class App extends React.Component {
     render(){
       return (
-        <div class="app-container">
+        <div className="app-container">
             <h1>Welcome to React</h1>
             <MainShopCardsComponent />
         </div>

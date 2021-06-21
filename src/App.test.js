@@ -1,31 +1,35 @@
 import { App } from './App';
 import React from 'react';
-import ReactTestRenderer  from 'react-test-renderer';
 import { MainShopCardsComponent } from './modules/ShopCards/components/MainShopCardsComponent'
 
-let componentInstance;
-let componentRenderer;
+import {configure , shallow} from 'enzyme';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
+
+configure({ adapter: new Adapter() });
+
+let component;
+const setUp = (props) => shallow(<App {...props}/>);
 
 beforeEach(() => {
 
-    componentRenderer  = ReactTestRenderer.create(<App />);
-    componentInstance = componentRenderer.root;
+    component = setUp();
 });
 
 afterEach(() => {
-    componentRenderer.unmount(<App />);
+
+    component.unmount();
 })
 
 describe('App main functional', () => {
 
     test('component is rendering' , () => {
         
-        expect(componentInstance).not.toBeNull();
+        expect(component).toMatchSnapshot();
     });
 
     test('component is not contains void', () => {
 
-        expect(componentInstance.children.length).not.toBe(0);
+        expect(component.children().length).not.toBe(0);
     });
 });
 
@@ -33,7 +37,7 @@ describe('App div[class="app-container"] functional', () => {
 
     test('component contains main div block with attr class="app-container" ' , () => {
         
-        expect(componentInstance.findByProps({class: "app-container"})).not.toBeNull();
+        expect(component.find('.app-container').length).toBe(1);
     });
 });
 
@@ -43,17 +47,17 @@ describe('App h1 functional', () => {
 
     beforeEach(() => {
 
-        loaclInstance = componentInstance.findByType('h1');
+        loaclInstance = component.find('h1');
     });
     
     test('component contains h1' , () => {
         
-        expect(loaclInstance).not.toBeNull();
+        expect(loaclInstance.length).toBe(1);
     });
 
     test('h1 contains inner text="Welcome to React"' , () => {
         
-        expect(loaclInstance.props.children).toBe('Welcome to React');
+        expect(loaclInstance.text()).toBe('Welcome to React');
     });
 });
 
@@ -63,16 +67,16 @@ describe('App MainShopCardsComponent functional', () => {
 
     beforeEach(() => {
 
-        loaclInstance = componentInstance.findByType(MainShopCardsComponent);
+        loaclInstance = component.find(MainShopCardsComponent);
     });
     
     test('component contains MainShopCardsComponent' , () => {
         
-        expect(loaclInstance).not.toBeNull();
+        expect(loaclInstance.length).toBe(1);
     });
 
     test('props of component is not setting' , () => {
 
-        expect(loaclInstance.props).toEqual({});
+        expect(loaclInstance.props()).toEqual({});
     });
 });

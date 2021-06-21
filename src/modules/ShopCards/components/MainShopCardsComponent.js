@@ -10,10 +10,17 @@ export class MainShopCardsComponent extends React.Component {
         }
     }
 
-    componentDidMount(){
+    componentDidMount() {
+
+        this.handleLoadData(
+            require('../models/PostCollection.json')
+        );
+    }
+
+    handleLoadData (postData) {
 
         this.setState({
-            postData: require('../models/PostCollection.json')
+            postData: postData
         });
     }
 
