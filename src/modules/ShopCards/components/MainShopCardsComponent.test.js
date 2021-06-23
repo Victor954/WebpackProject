@@ -9,61 +9,56 @@ configure({ adapter: new Adapter() });
 let component;
 const setUp = (props) => shallow(<MainShopCardsComponent { ...props }/>);
 
-beforeEach(() => {
+const spy = jest.spyOn(MainShopCardsComponent.prototype, 'componentDidMount');
 
+beforeEach(() => {
     component = setUp();
 });
 
 afterEach(() => {
-
+    
+    spy.mockClear();
     component.unmount();
 })
 
-describe('MainShopCardsComponent main functional', () => {
+describe('componentDidMount tests' , () => {
 
-    test('component is rendering' , () => {
-        
-        expect(component).toMatchSnapshot();
-    });
-
-    test('component is not contains void', () => {
-
-        expect(component.children().length).not.toBe(0);
+    test('componentDidMountSpy called once time' , () => {
+        expect(spy).toBeCalledTimes(1);
     });
 });
 
-describe('MainShopCardsComponent instance functional' , () => {
+
+describe('handleLoadData tests' , () => {
 
     let instance;
-    const componentDidMountSpy = jest.spyOn(MainShopCardsComponent.prototype, 'componentDidMount')
+
+    const setInstnceGetPostFn = (fn) =>  {
+
+        const getPostDataFn = jest.fn().mockImplementation(fn);
+        instance.getPostData = getPostDataFn
+    
+        return getPostDataFn;
+    }
 
     beforeEach(() => {
-
         instance = component.instance();
     });
+
+    test('componentDidMount called handleLoadData once time' , () => {
+
+        const getPostDataFn = setInstnceGetPostFn(() => []);
+        
+        instance.componentDidMount();
+        expect(getPostDataFn).toBeCalledTimes(1);
+    });
     
-    afterEach(() => {
-        componentDidMountSpy.mockReset();
-    })
-
-    test('handleLoadData is changing state.postData' , () => {
-        const data = [1, 2, 3, 4, 5];
-
-        instance.handleLoadData(data);
-        expect(component.state().postData).toEqual(data);
-    });
-
-    test('componentDidMountSpy called once time' , () => {
-        expect(componentDidMountSpy).toBeCalledTimes(1);
-    });
-
-    test('when call componentDidMountSpy called handleLoadData once time' , () => {
-
-        const handleLoadDataSpy = jest.spyOn(instance, 'handleLoadData');
-        instance.handleLoadData([]);
-
-        component.update();
-
-        expect(handleLoadDataSpy).toHaveBeenCalledTimes(1);
+    
+    test('set void array at state when called componentDidMount' , () => {
+    
+        setInstnceGetPostFn(() => []);
+        
+        instance.componentDidMount();
+        expect(instance.state.postData).toEqual([]);
     });
 });

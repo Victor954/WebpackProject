@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "test": "jest",
+    "clean-test": "jest -u",
     "dev": "cross-env ENV_NODE_MODE=development webpack --mode development",
     "build": "cross-env ENV_NODE_MODE=production webpack --mode production",
     "start": "cross-env ENV_NODE_MODE=development webpack serve --mode development --open"
