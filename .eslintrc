@@ -12,6 +12,7 @@
     "window":true,
     "document": true,
     "console": true,
-    "require": true
+    "require": true,
+    "Promise": true
   }
 }
