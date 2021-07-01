@@ -122,13 +122,15 @@ module.exports = {
         main: './index.js'
     },
     output: {
+        publicPath: "/",
         filename: '[name].[contenthash].bundle.js',
         path: path.resolve(__dirname,'dist')
     },
     optimization:getOptimization(),
     devtool: sourceMap,
     devServer: {
-        port: 7000
+        port: 7000,
+        historyApiFallback: true
     },
     module: {
         rules: getLoaders()

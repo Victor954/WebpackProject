@@ -1,42 +1,45 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import {
   Route,
-  Redirect,
+  Redirect
 } from "react-router-dom";
 
 import context from '../context/AuthContext';
 
-export class PrivateRoute extends React.Component {
+  function PrivateRoute({ children, roleAccess, ...rest }) {
+    
+    const routeRender = (props , authData) => {
 
-    static get propTypes() {
-      return {
-        children: PropTypes.any
-      };
-    }
-  
-    constructor(props) {
-      super(props);
-  
-      this.children = props.children;
-    }
-  
-    render() {
-  
-  
-      const getRoutedData = ({ location }) => {
-  
-        return (<context.Consumer>
-          {
-            authData => (authData.user) ? this.children : <Redirect to={{
-              pathname: "/login",
-              state: { from: location }
-            }} />
-          }
-        </context.Consumer>);
+      if(authData.user == null){
+        return null;
       }
-  
-      return (<Route component={getRoutedData}></Route>);
+      const authRoleAccess = authData.user.role.roleAccess
+      const pathName = (authRoleAccess > 0) ? "404" :  "/login";
+
+      if(authRoleAccess < roleAccess){
+
+        return <Redirect to={{ pathname: pathName, state: { from: props.location } }} />
+      }
+
+      return children;
     }
+
+
+    return (
+      <context.Consumer>
+      {
+        routhData => {
+
+          return ( <Route
+            {...rest}
+            render={(props) => routeRender(props, routhData)}
+          />)
+        }
+      }
+      </context.Consumer>
+
+    );
   }
+
+  export default PrivateRoute;
