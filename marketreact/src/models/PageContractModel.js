@@ -1,10 +1,11 @@
 export default class PageContractModel {
 
-    constructor({ PageComponent , levelAccess, menuItemName }) {
+    constructor({ PageComponent , levelAccess, menuItemName , store }) {
 
         this._PageComponent = PageComponent;
         this._levelAccess = levelAccess;
         this._menuItemName = menuItemName;
+        this._store = store;
     }
 
     get PageComponent() {
@@ -17,5 +18,9 @@ export default class PageContractModel {
 
     get menuItemName() {
         return this._menuItemName;
+    }
+
+    get store() {
+        return this._store;
     }
 }
