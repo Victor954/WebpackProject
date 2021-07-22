@@ -7,16 +7,40 @@ import { connect , Provider } from 'react-redux';
 
 //#region Actions
 
-const ACTION_1 = "ACTION_NAME_1";
+
+const SET_USER = "SET_USER";
+const CHANGE_USER_NAME = "CHANGE_USER_NAME";
+const CHANGE_USER_LAST_NAME = "CHANGE_USER_LAST_NAME";
+const CHANGE_USER_AGE = "CHANGE_USER_AGE";
+const CHANGE_USER_EMAIL = "CHANGE_USER_NAME";
+
+const CHANGE_POST_TITLE = "CHANGE_POST_TITLE";
+const CHANGE_POST_DISCRIPTION = "CHANGE_POST_DISCRIPTION";
 
 //#endregion
 
 //#region ActionsCreactor
 
-function action_1 (value) {
+function action_change_user_name (value) {
 
   return {
-    type: ACTION_1,
+    type: CHANGE_USER_NAME,
+    value: value
+  }
+}
+
+function action_set_user (value) {
+
+  return {
+    type: SET_USER,
+    value: value
+  }
+}
+
+function action_change_post_title (value) {
+
+  return {
+    type: CHANGE_POST_TITLE,
     value: value
   }
 }
@@ -25,30 +49,57 @@ function action_1 (value) {
 
 //#region Reducers
 
-const reducer = function (state = {}, action) {
+const userDataReducer = function (state = {}, action) {
 
     switch (action.type) {
-      case ACTION_1:
-          state.data = action.value;
-          return {...state};
+      case SET_USER:
+          return action.value;
+      case CHANGE_USER_NAME:
+          return {...state , name: action.value};
     }
 
     return state;
 }
+
+const postDataReducer = function (state = {}, action) {
+
+    switch (action.type) {
+      case CHANGE_POST_TITLE:
+        return {...state , title: action.value};
+    }
+
+    return state;
+}
+
+const rootReducer = combineReducers({
+
+  userData: userDataReducer,
+  postData: postDataReducer
+})
 
 //#endregion
 
 //#region initialState
 
 const initialState = {
-  data: 'test'
+
+  userData: {
+    name: '',
+    lastName:'',
+    age: 0,
+    email: ''
+  },
+  postData: {
+    title: '',
+    discription: ''
+  }
 }
 
 //#endregion
 
 //#region Store
 
-const store = createStore(reducer, initialState);
+const store = createStore(rootReducer, initialState);
 
 //#endregion
 
@@ -57,27 +108,55 @@ const store = createStore(reducer, initialState);
 function mapStateToProps(state) {
 
   return {
-    data: state.data
+    userData: state.userData,
+    postData:  state.postData
   };
 }
 
 function mapDispatchToProps(dispatch) { 
   
   return {
-    onChange1: bindActionCreators(action_1, dispatch)
+    onChangeUserName: bindActionCreators(action_change_user_name, dispatch),
+    onSetUserName: bindActionCreators(action_set_user , dispatch),
+    onChangePostTitle: bindActionCreators(action_change_post_title, dispatch)
   };
 }
 
 
 function AppView (props) {
 
-  const clickAction = (e) => {
-    props.onChange1('test2');
+  const clickActionChangeUser = (e) => {
+
+    props.onSetUserName({
+      name : 'Name',
+      lastName: 'Last name',
+      age: 12,
+      email: 'Email@email.org'
+    });
+  }
+
+  const clickActionChangePost = (e) => {
+    props.onChangePostTitle('Title');
   }
 
   return (<div>
-    <button onClick={clickAction}>click</button>
-    {props.data}
+    <button onClick={clickActionChangeUser}>change user</button>
+    <button onClick={clickActionChangePost}>change post</button>
+
+    <h2>User</h2>
+    <hr />
+    <div>
+      <h3>{props.userData.name}</h3>
+      <span>{props.userData.lastName}</span> 
+      <span>{props.userData.email}</span> 
+    </div>
+
+    <h2>Post</h2>
+    <hr />
+    <div>
+      <h3>{props.postData.title}</h3>
+      <p>{props.userData.discription}</p> 
+    </div>
   </div>);
 }
 
