@@ -1,11 +1,12 @@
 export default class PageContractModel {
 
-    constructor({ PageComponent , levelAccess, menuItemName , store }) {
+    constructor({ PageComponent , levelAccess, menuItemName , reducersObject , saga }) {
 
         this._PageComponent = PageComponent;
         this._levelAccess = levelAccess;
         this._menuItemName = menuItemName;
-        this._store = store;
+        this._reducersObject = reducersObject;
+        this._saga = saga;
     }
 
     get PageComponent() {
@@ -20,7 +21,11 @@ export default class PageContractModel {
         return this._menuItemName;
     }
 
-    get store() {
-        return this._store;
+    get reducersObject() {
+        return this._reducersObject;
+    }
+
+    get saga() {
+        return this._saga;
     }
 }

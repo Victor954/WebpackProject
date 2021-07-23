@@ -1,11 +1,13 @@
 import React from "react";
-import MainProductComponent from "../../modules/products";
+import MainProductsContract from "../../modules/products";
 
 export default function HomePage(props) {
 
+    const MainProductsComponent = MainProductsContract.MainComponent;
+
     return (
         <div>
-            <MainProductComponent/>
+            <MainProductsComponent/>
         </div>
     )
 }
