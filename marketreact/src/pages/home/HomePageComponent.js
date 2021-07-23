@@ -1,5 +1,5 @@
 import React from "react";
-import MainProductComponent from "../../modules/products/components/mainPropductComponent/MainProductComponent";
+import MainProductComponent from "../../modules/products";
 
 export default function HomePage(props) {
 

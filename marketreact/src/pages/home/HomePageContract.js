@@ -1,10 +1,10 @@
 import PageContractModel from "../../models/PageContractModel";
 import HomePage from './HomePageComponent';
-import Store from './localStore/HomePageStore';
+import rootReducer from './HomePageReducer';
 
 export default new PageContractModel({
     PageComponent: HomePage,
     levelAccess: 0,
     menuItemName: 'Главная',
-    store: Store
+    store: rootReducer
 });
