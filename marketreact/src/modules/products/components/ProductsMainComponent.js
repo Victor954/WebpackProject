@@ -3,34 +3,45 @@ import Card from './productCard/ProductCardComponent';
 import { bindActionCreators  } from 'redux';
 import { connect } from 'react-redux';
 
-import { action_products_fetch_request } from '../store/actionsCreator/ProductsActionsCreator';
+import { loadProducts } from './../../../services/productService/store/ProductActionsCreator';
 
 function MainProductComponent(props) {
 
     const onLoadData = (e) => {
 
-        props.onProductsFetchRequest();
+        props.onLoadProductRequest();
+    }
+
+    if(props.loading){
+
+        return (
+            <div>loading...</div>
+        )
     }
 
     return (
         <div>
+
             <button onClick={onLoadData}>on load data</button>
             {props.products.map(postData => <Card key={postData.id} {...postData}/>)}
         </div>
     )
 }
 
-function mapStateToProps (state) {
+function mapStateToProps ({ productServiceModel }) {
+
+    const { loadedProduts } = productServiceModel;
 
     return {
-        products: state.productsModule.propducts
+        products: loadedProduts.data,
+        loading:  loadedProduts.loading
       };
 }
 
 function mapDispatchToProps (dispatch) {
 
     return {
-        onProductsFetchRequest: bindActionCreators(action_products_fetch_request, dispatch)
+        onLoadProductRequest: bindActionCreators(loadProducts.action_request, dispatch)
     }
 }
 

@@ -1,13 +1,11 @@
 import MainComponent from './components/ProductsMainComponent';
-import ModuleContractModel from '../../models/ModuleContractModel';
+import ModuleContractModel from '../../contracts/ModuleContractModel';
 
-import saga from './store/reducers/ProductsSaga';
-import rootReducers from './store/reducers/PropductsReducers';
+import rootReducer from './store/PropductsReducers';
 
 
 export default new ModuleContractModel({
     MainComponent: MainComponent,
-    saga: saga,
-    reducers: rootReducers,
-    moduleCode: 'productsModule'
+    reducer: rootReducer,
+    code: 'productsModule'
 });

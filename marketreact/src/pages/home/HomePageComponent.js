@@ -1,9 +1,9 @@
 import React from "react";
-import MainProductsContract from "../../modules/products";
+import Injection from "./index";
 
 export default function HomePage(props) {
 
-    const MainProductsComponent = MainProductsContract.MainComponent;
+    const MainProductsComponent = Injection.getComponentByCode('productsModule');
 
     return (
         <div>

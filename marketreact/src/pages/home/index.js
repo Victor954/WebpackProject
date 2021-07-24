@@ -1,12 +1,13 @@
-import PageContractModel from "../../models/PageContractModel";
+import PageContractModel from "../../contracts/PageContractModel";
 import HomePage from './HomePageComponent';
-import * as rootReducerSaga from './HomePageReducer';
 
+import ProductsModuleContract from './../../modules/products';
+import ProductServiceContract from './../../services/productService';
 
 export default new PageContractModel({
     PageComponent: HomePage,
     levelAccess: 0,
     menuItemName: 'Главная',
-    reducersObject: rootReducerSaga.getReducer(),
-    saga: rootReducerSaga.getSaga()
+    modulesContracts: [ ProductsModuleContract ],
+    servicesContracts: [ ProductServiceContract ]
 });
