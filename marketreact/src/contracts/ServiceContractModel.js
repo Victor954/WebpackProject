@@ -1,6 +1,6 @@
 export default class ServiceContractModel {
 
-    constructor({reducer , saga , code}) {
+    constructor({reducer , saga , code }) {
 
         this._reducer = reducer;
         this._saga = saga;

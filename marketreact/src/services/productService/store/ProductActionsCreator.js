@@ -1,25 +1,5 @@
 import * as Actions from './PropductActions';
-
-const getAction = (type) => {
-
-    return (value) => {
-
-        return {
-            type: type,
-            payload: value
-        }
-    }
-}
-
-const getActions = ({ failedType , succeededType , requestType , loadingType }) => {
-
-    return {
-        action_failed: getAction(failedType),
-        action_succeeded: getAction(succeededType),
-        action_request: getAction(requestType),
-        action_loading: getAction(loadingType)
-    }
-}
+import { getActions } from './../../helperService/ActionsCreatorHelper';
 
 export const loadProducts = getActions({
     failedType: Actions.FETCH_LOAD_PRODUCTS_FAILED,

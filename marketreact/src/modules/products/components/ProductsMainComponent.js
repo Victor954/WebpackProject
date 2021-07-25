@@ -28,13 +28,13 @@ function MainProductComponent(props) {
     )
 }
 
-function mapStateToProps ({ productServiceModel }) {
+function mapStateToProps ({ modulesData }) {
 
-    const { loadedProduts } = productServiceModel;
+    const { productServiceModel } = modulesData;
 
     return {
-        products: loadedProduts.data,
-        loading:  loadedProduts.loading
+        products: productServiceModel.loadedProduts.data,
+        loading:  productServiceModel.loadedProduts.loading
       };
 }
 

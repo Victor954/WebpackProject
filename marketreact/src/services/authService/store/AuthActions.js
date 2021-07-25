@@ -1,0 +1,24 @@
+//#region Login in 
+
+export const FETCH_LOGIN_IN_REQUEST = 'FETCH_LOGIN_IN_REQUEST';
+
+export const FETCH_LOGIN_IN_SUCCEEDED = 'FETCH_LOGIN_IN_SUCCEEDED';
+
+export const FETCH_LOGIN_IN_FAILED = 'FETCH_LOGIN_IN_FAILED';
+
+export const LOADING_LOGIN_IN = 'LOADING_LOGIN_IN';
+
+//#endregion
+
+
+//#region Read Produts
+
+export const FETCH_LOGIN_OUT_REQUEST = 'FETCH_LOGIN_OUT_REQUEST';
+
+export const FETCH_LOGIN_OUT_SUCCEEDED = 'FETCH_LOGIN_OUT_SUCCEEDED';
+
+export const FETCH_LOGIN_OUT_FAILED = 'FETCH_LOGIN_OUT_FAILED';
+
+export const LOADING_LOGIN_OUT = 'LOADING_LOGIN_OUT';
+
+//#endregion

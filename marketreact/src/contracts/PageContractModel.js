@@ -2,7 +2,7 @@ import { all } from 'redux-saga/effects';
 import { combineReducers } from 'redux';
 export default class PageContractModel {
 
-    constructor({ PageComponent , levelAccess, menuItemName , modulesContracts , servicesContracts }) {
+    constructor({ PageComponent , levelAccess, menuItemName , pathUrl , modulesContracts , servicesContracts }) {
 
         this._PageComponent = PageComponent;
         this._levelAccess = levelAccess;

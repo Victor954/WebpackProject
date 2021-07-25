@@ -1,15 +1,8 @@
-const getStore = (data) => {
+import { getState } from './../../helperService/StateHelper';
 
-    return {
-        data: data,
-        errrorLoading: null,
-        loading: false
-    }
-}
+export const loadProductsStore = getState([]);
 
-export const loadProductsStore = getStore([]);
-
-export const addProductStore = getStore({
+export const addProductStore = getState({
     id: 0,
     title: '',
     discription: ''
