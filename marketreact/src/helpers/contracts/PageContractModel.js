@@ -1,5 +1,5 @@
-import { all } from 'redux-saga/effects';
-import { combineReducers } from 'redux';
+import CreatorStore from './ContractStore';
+
 export default class PageContractModel {
 
     constructor({ PageComponent , levelAccess, menuItemName , pathUrl , modulesContracts , servicesContracts }) {
@@ -10,6 +10,8 @@ export default class PageContractModel {
         
         this._modulesContracts = modulesContracts;
         this._servicesContracts = servicesContracts;
+
+        this._contractStore = new CreatorStore({ modulesContracts: this._modulesContracts,  servicesContracts: this._servicesContracts });
     }
 
     get PageComponent() {
@@ -24,28 +26,14 @@ export default class PageContractModel {
         return this._menuItemName;
     }
 
-    _getReducerFromContracts(contracts) {
-
-        const entiresArray = contracts.map(contract => [contract.code , contract.reducer]);
-
-        return Object.fromEntries(new Map(entiresArray));
-    }
-
     getReducer = () => {
-   
-        return combineReducers({
-            ...this._getReducerFromContracts(this._modulesContracts),
-            ...this._getReducerFromContracts(this._servicesContracts)
-        });
+        
+        return this._contractStore.getReducer();
     }
     
     getSaga = () => {
         
-        const context = this;
-
-        return function* rootSaga() {
-            yield all( context._servicesContracts.map(contract => contract.saga()) );
-          }
+        return this._contractStore.getSaga();
     }
 
     getComponentByCode = (code) => {

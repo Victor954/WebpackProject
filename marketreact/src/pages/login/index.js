@@ -1,6 +1,5 @@
-import PageContractModel from "../../contracts/PageContractModel";
+import PageContractModel from "../../helpers/contracts/PageContractModel";
 import LoginPage from './LoginPageComponent';
-import AuthServiceContract from './../../services/authService';
 
 export default new PageContractModel({
     PageComponent: LoginPage,

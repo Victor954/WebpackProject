@@ -1,4 +1,4 @@
-import { call, put, takeLatest, all } from 'redux-saga/effects'
+import { call, put, takeLatest } from 'redux-saga/effects'
 import * as actionsCreator from './ProductActionsCreator';
 import { FETCH_LOAD_PRODUCTS_REQUEST , FETCH_ADD_PRODUCT_REQUEST } from './PropductActions';
 import * as Api from '../api/ProductApi';

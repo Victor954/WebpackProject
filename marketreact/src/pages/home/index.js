@@ -1,4 +1,4 @@
-import PageContractModel from "../../contracts/PageContractModel";
+import PageContractModel from "../../helpers/contracts/PageContractModel";
 import HomePage from './HomePageComponent';
 
 import ProductsModuleContract from './../../modules/products';

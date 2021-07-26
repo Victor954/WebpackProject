@@ -1,5 +1,5 @@
 import MainComponent from './components/ProductsMainComponent';
-import ModuleContractModel from '../../contracts/ModuleContractModel';
+import ModuleContractModel from '../../helpers/contracts/ModuleContractModel';
 
 import rootReducer from './store/PropductsReducers';
 

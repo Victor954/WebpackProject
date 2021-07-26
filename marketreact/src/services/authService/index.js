@@ -1,4 +1,4 @@
-import ServiceContractModel from '../../contracts/ServiceContractModel';
+import ServiceContractModel from '../../helpers/contracts/ServiceContractModel';
 import rootReducer from './store/AuthReducers';
 import rootSaga from './store/AuthSaga';
 
