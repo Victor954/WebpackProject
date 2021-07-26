@@ -1,12 +1,13 @@
 import React from 'react';
-import HomeContract from './pages/home/index';
+import HomeContract from './pages/home';
+import LoginContract from './pages/login';
+
 
 import { createStore , applyMiddleware , compose , combineReducers} from 'redux';
 import createSagaMiddleware  from 'redux-saga';
 import { all } from 'redux-saga/effects';
 import { Provider , useSelector } from 'react-redux';
 import { useLocation , useHistory } from 'react-router-dom';
-
 
 import AuthContract from './services/authService'
 
@@ -20,41 +21,46 @@ import {
 
 
 
-function PrivateRoute({ pageContract , store , rootMainReducer, ...rest }) {
-
-  const rootModuleReducer =  pageContract.getReducer();
-  const Component = pageContract.PageComponent;
-
-  const rootReducer = combineReducers({
-    mainData:rootMainReducer ,
-    modulesData: rootModuleReducer
-  });
-
-  //let history = useHistory();
-  //let location = useLocation();
-  //let { from } = location.state || { from: { pathname: "/" } };
-
-  store.replaceReducer(rootReducer);
+function PrivateRoute({ ...rest }) {
 
   const auth = useSelector((state) => state.mainData.authServiceModel.authUserData.data.token);
+  let location = useLocation();
 
-  return (
-    <Route
-      {...rest}
-      render={({ location }) =>
-        auth ? (
-            <Component />
-        ) : (
-          <Redirect
-            to={{
-              pathname: "/login",
-              state: { from: location }
-            }}
-          />
-        )
-      }
+  if(location.pathname == "/login" ) {
+    return null;
+  }
+
+  if (!auth) {
+
+    return <Redirect
+      to={{
+        pathname: "/login",
+        state: { from: location }
+      }}
     />
-  );
+  } else {
+
+    return (
+      <ReduxRoute 
+      {...rest} />
+    );
+  }
+
+
+}
+
+const ReduxRoute = ({pageContract , reduxData , ...rest}) => {
+
+    const Component = pageContract.PageComponent;
+    const { store ,  reducresObject } = reduxData;
+
+    reducresObject.pageData = pageContract.getReducer();
+
+    store.replaceReducer(combineReducers(reducresObject));
+    
+    return (<Route {...rest}>
+      <Component />
+    </Route>)
 }
 
 class CreatorStore {
@@ -96,16 +102,25 @@ export default function App (props) {
   const creatorStore = new CreatorStore(servicesContracts)
 
   const rootReducer =  creatorStore.getReducer();
-  const sagaMiddleware = createSagaMiddleware()
+  const sagaMiddleware = createSagaMiddleware();
+
+  const reducresObject = {
+    mainData: rootReducer
+  }
 
   const store = createStore(
-    (state , action) => state, 
+    combineReducers(reducresObject), 
     compose (
       applyMiddleware(sagaMiddleware),
       window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
     ));
 
   sagaMiddleware.run(creatorStore.getSaga());
+    
+  const reduxData = {
+    store: store,
+    reducresObject: reducresObject
+  }
 
   return (
 
@@ -113,10 +128,8 @@ export default function App (props) {
 
     <Switch>
         <Provider store={store}>
-          <PrivateRoute  exact path="/" pageContract={ HomeContract } store={ store } rootMainReducer ={rootReducer} />
-          <Route exact path="/login">
-              <div>wow</div>
-          </Route>
+          <PrivateRoute  exact path="/" pageContract={ HomeContract } reduxData={ reduxData } />
+          <ReduxRoute exact path="/login"  pageContract={ LoginContract } reduxData={ reduxData } />
         </Provider>
     </Switch>
 

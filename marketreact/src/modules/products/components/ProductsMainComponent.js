@@ -28,9 +28,9 @@ function MainProductComponent(props) {
     )
 }
 
-function mapStateToProps ({ modulesData }) {
+function mapStateToProps ({pageData}) {
 
-    const { productServiceModel } = modulesData;
+    const { productServiceModel } = pageData;
 
     return {
         products: productServiceModel.loadedProduts.data,
