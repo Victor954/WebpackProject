@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
 
 import * as Actions from './PropductActions';
-import * as Store from './ProductInitialStore';
+import * as State from './ProductInitialState';
 
-const propductsLoadReducer = (state = Store.loadProductsStore, action) => {
+const propductsLoadReducer = (state = State.loadProductsState, action) => {
 
     switch(action.type){
         case Actions.FETCH_LOAD_PRODUCTS_SUCCEEDED:
@@ -17,7 +17,7 @@ const propductsLoadReducer = (state = Store.loadProductsStore, action) => {
     }
 }
 
-const propductsAddReducer = (state = Store.addProductStore, action) => {
+const propductsAddReducer = (state = State.loadProductsState, action) => {
 
     switch(action.type){
         case Actions.FETCH_ADD_PRODUCT_SUCCEEDED:

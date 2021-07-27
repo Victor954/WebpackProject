@@ -15,13 +15,14 @@ export default function App (props) {
 
   const data = getReduxData(servicesContracts);
 
+
   return (
 
     <Router>
 
     <Switch>
         <Provider store={data.store}>
-          <PrivateRoute  exact path="/" pageContract={ HomeContract } reduxData={ data } />
+          <PrivateRoute exact path="/" pageContract={ HomeContract } reduxData={ data } />
           <LoaderRoute exact path="/login"  pageContract={ LoginContract } reduxData={ data } />
         </Provider>
     </Switch>
