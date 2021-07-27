@@ -5,6 +5,9 @@ import { connect } from 'react-redux';
 
 import { loadProducts } from './../../../services/productService/store/ProductActionsCreator';
 
+import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 function MainProductComponent(props) {
 
     const onLoadData = (e) => {
@@ -15,15 +18,18 @@ function MainProductComponent(props) {
     if(props.loading){
 
         return (
-            <div>loading...</div>
+            <CircularProgress />
         )
     }
 
     return (
-        <div>
+        <div className="container">
 
-            <button onClick={onLoadData}>on load data</button>
-            {props.products.map(postData => <Card key={postData.id} {...postData}/>)}
+            <Button variant="contained" color="primary" onClick={onLoadData}>on load data</Button>
+            
+            <div className="row">
+                {props.products.map(postData => <Card key={postData.id} {...postData}/>)}
+            </div>
         </div>
     )
 }
