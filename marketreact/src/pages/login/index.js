@@ -1,10 +1,13 @@
 import PageContractModel from "../../helpers/contracts/PageContractModel";
 import LoginPage from './LoginPageComponent';
+import ShowModeEnum from '../../helpers/models/ShowModeEnum';
 
 export default new PageContractModel({
     PageComponent: LoginPage,
     levelAccess: 0,
-    menuItemName: 'Главная',
+    menuItemName: 'Войти',
     modulesContracts: [  ],
-    servicesContracts: [  ]
+    servicesContracts: [  ],
+    menuLink: '/login',
+    showMode: ShowModeEnum.neverShow
 });
