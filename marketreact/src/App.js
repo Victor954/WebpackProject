@@ -12,6 +12,14 @@ import { getReduxData } from './helpers/GenerateStore';
 
 import ShowModeEnum from './helpers/models/ShowModeEnum';
 
+import { create } from 'jss';
+import { StylesProvider, jssPreset } from '@material-ui/core/styles';
+import rtl from 'jss-rtl';
+
+const jss = create({
+  plugins: [...jssPreset().plugins, rtl()],
+});
+
 const servicesContracts = [ AuthContract ]
 const pageContracts = [HomeContract , LoginContract];
 
@@ -46,16 +54,18 @@ export default function App (props) {
   return (
     
     <Router>
+      <StylesProvider jss={jss}>
+        <HeaderContract.PageComponent  contracts={pageContracts}/>
 
-      <HeaderContract.PageComponent  contracts={pageContracts}/>
+        <Switch>
+  
+          <Provider store={data.store}>
+            <PrivateRoute exact path="/" pageContract={ HomeContract } reduxData={ data } />
+            <LoaderRoute exact path="/login"  pageContract={ LoginContract } reduxData={ data } />
+          </Provider>
+        </Switch>
+      </StylesProvider>
 
-    <Switch>
-      
-    <Provider store={data.store}>
-          <PrivateRoute exact path="/" pageContract={ HomeContract } reduxData={ data } />
-          <LoaderRoute exact path="/login"  pageContract={ LoginContract } reduxData={ data } />
-        </Provider>
-    </Switch>
 
     </Router>
   )

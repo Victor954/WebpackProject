@@ -1,0 +1,63 @@
+$white: #fff;
+$grey: #D7D7D9;
+$dark-grey: #A1A2A6;
+$black: #0D0D0D;
+
+$base-color: #282740;
+$base-color-dark:#020126;
+
+$red: #D94B2B;
+
+
+/*#region LoginButton*/
+
+.login-button {
+    background-color: inherit;
+    border:solid 2px $base-color-dark;
+    padding: 6px 30px;
+
+    .login-button-label {
+        color:$black;
+    }
+}
+
+.login-button:hover {
+    transition: all .2s;
+    border-color: $base-color;
+    background-color: $base-color;
+}
+
+.login-button:hover > .login-button-label {
+    color:$white;
+}
+
+/*#endregion LoginButton*/
+
+/*#region User*/
+.user-box {
+    display: flex;
+
+    .email {
+        font-weight: 500;
+        margin-right: 15px;
+        line-height: 1;
+        padding: 16px 0px;
+        display: flex;
+    }
+
+    .user-avatar-color {
+        background-color: $base-color;
+        color:$grey;
+        border:solid 5px;
+
+        transition: all .2s;
+    }
+
+    .user-avatar-color:hover{
+        cursor: pointer;
+        border-color:$base-color;
+        background-color: $grey;
+        color: $base-color;
+    }
+}
+/*#endregion User*/

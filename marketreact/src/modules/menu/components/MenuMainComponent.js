@@ -1,54 +1,44 @@
-import { AppBar, Toolbar ,List , ListItem, Button , makeStyles } from '@material-ui/core';
+import { AppBar, Toolbar ,List , ListItem } from '@material-ui/core';
+import { StylesProvider } from "@material-ui/core/styles";
 import { Link  } from "react-router-dom";
-import ShowModeEnum from '../../../helpers/models/ShowModeEnum';
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-      flexGrow: 1,
-    },
-    list: {
-      width: '100%',
-      display: 'flex'
-    },
-    listItem: {
-      width: 'auto'
-    },
-    linkText: {
-      color:'#fff',
-      textDecoration: 'none'
-    },
-  }));
+import ShowModeEnum from '../../../helpers/models/ShowModeEnum';
+import UserMenuComponent from './userMenu/UserMenuComponent';
+
+import './MenuMainComponent.scss';
 
 export default function MenuMainComponent({ contracts }) {
 
-    const classes = useStyles();
+    const getMenuItems = () => {
+        
+        return contracts.map((contract) => {
+
+            if (contract.showMode !== ShowModeEnum.neverShow) {
+                return (
+                    <ListItem  className="menu-list-item" key={contract.menuLink}>
+                        <Link to={contract.menuLink} >{contract.menuItemName}</Link>
+                    </ListItem>
+                )
+            }
+
+            return null;
+        });
+    }
 
     return (
-        <div className={classes.root}>
-            <AppBar position="static">
+        <div>
+            <StylesProvider injectFirst>
+            <AppBar position="static" color="default">
                 <Toolbar>
-                    <List className={classes.list}>
-
-                        {
-                        contracts.map((contract) => {
-
-                            if (contract.showMode !== ShowModeEnum.neverShow) {
-
-                                return (
-                                    <ListItem className={classes.listItem} key={contract.menuLink}>
-                                        <Link className={classes.linkText} to={contract.menuLink} >{contract.menuItemName}</Link>
-                                    </ListItem>
-                                )
-                            }
-
-                            return null;
-                        })
-                        }
-
+                    
+                    <List className="menu-list">
+                        {  getMenuItems() }
                     </List>
-                    <Button className={classes.menuButton} color="inherit">Login</Button>
+                    
+                    <UserMenuComponent />
                 </Toolbar>
             </AppBar>
+            </StylesProvider>
         </div>
     )
 }
