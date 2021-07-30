@@ -1,9 +1,8 @@
 import { AppBar, Toolbar ,List , ListItem } from '@material-ui/core';
-import { StylesProvider } from "@material-ui/core/styles";
 import { Link  } from "react-router-dom";
 
-import ShowModeEnum from '../../../helpers/models/ShowModeEnum';
-import UserMenuComponent from './userMenu/UserMenuComponent';
+import { ShowStateModelEnum } from '../../../helpers/models/ShowModeEnum';
+import UserSector from './userSector/UserSectorComponent';
 
 import './MenuMainComponent.scss';
 
@@ -13,7 +12,7 @@ export default function MenuMainComponent({ contracts }) {
         
         return contracts.map((contract) => {
 
-            if (contract.showMode !== ShowModeEnum.neverShow) {
+            if (contract.showMode !== ShowStateModelEnum.neverShow) {
                 return (
                     <ListItem  className="menu-list-item" key={contract.menuLink}>
                         <Link to={contract.menuLink} >{contract.menuItemName}</Link>
@@ -26,8 +25,7 @@ export default function MenuMainComponent({ contracts }) {
     }
 
     return (
-        <div>
-            <StylesProvider injectFirst>
+        <div>     
             <AppBar position="static" color="default">
                 <Toolbar>
                     
@@ -35,10 +33,9 @@ export default function MenuMainComponent({ contracts }) {
                         {  getMenuItems() }
                     </List>
                     
-                    <UserMenuComponent />
+                    <UserSector />
                 </Toolbar>
             </AppBar>
-            </StylesProvider>
         </div>
     )
 }

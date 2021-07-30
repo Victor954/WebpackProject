@@ -2,23 +2,31 @@ import CreatorStore from './contracts/ContractStore';
 import { createStore , applyMiddleware , compose , combineReducers} from 'redux';
 import createSagaMiddleware  from 'redux-saga';
 
-export const getReduxData = (servicesContracts) => {
+export const getReduxData = (servicesContracts , pagesContracts) => {
 
-    const creatorStore = new CreatorStore({ servicesContracts: servicesContracts });
+    const mainServicesStore = new CreatorStore({ servicesContracts: servicesContracts });
+    const pagesCreatorsStore = pagesContracts.map(pageContract => pageContract.creatorStore);
+
     const sagaMiddleware = createSagaMiddleware();
   
-    const reducresObject = {
-      mainData: creatorStore.getReducer()
+    const mainReducresObject = {
+      mainData: mainServicesStore.getReducer()
     }
-  
+
+    const entiresArray = pagesCreatorsStore.map((creatorStore , index) => [`${pagesContracts[index].pageCode}Data` , creatorStore.getReducer()]);
+    const pagesReducers = Object.fromEntries(new Map(entiresArray));
+    
+    const reducresObject = {...mainReducresObject , ...pagesReducers};
+
     const store = createStore(
       combineReducers(reducresObject), 
       compose (
         applyMiddleware(sagaMiddleware),
         window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
       ));
-  
-    sagaMiddleware.run(creatorStore.getSaga());
+    
+    
+    [...pagesCreatorsStore , mainServicesStore].forEach(creatorStore => sagaMiddleware.run(creatorStore.getSaga()));
       
     return {
       store: store,

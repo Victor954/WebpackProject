@@ -5,5 +5,6 @@ import MenuModuleContract from './../../modules/menu';
 export default new PageContractModel({
     PageComponent: HomePage,
     modulesContracts: [ MenuModuleContract ],
-    servicesContracts: [  ]
+    servicesContracts: [  ],
+    pageCode: 'header',
 });

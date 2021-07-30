@@ -3,7 +3,7 @@ import HomePage from './HomePageComponent';
 
 import ProductsModuleContract from './../../modules/products';
 import ProductServiceContract from './../../services/productService';
-import ShowModeEnum from '../../helpers/models/ShowModeEnum';
+import { ShowStateModelEnum } from '../../helpers/models/ShowModeEnum';
 
 export default new PageContractModel({
     PageComponent: HomePage,
@@ -12,5 +12,6 @@ export default new PageContractModel({
     modulesContracts: [ ProductsModuleContract ],
     servicesContracts: [ ProductServiceContract ],
     menuLink: '/',
-    showMode: ShowModeEnum.show
+    showMode: ShowStateModelEnum.show,
+    pageCode: 'home'
 });

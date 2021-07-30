@@ -2,7 +2,7 @@ import CreatorStore from './ContractStore';
 
 export default class PageContractModel {
 
-    constructor({ PageComponent , levelAccess, menuItemName , menuLink , showMode , modulesContracts , servicesContracts }) {
+    constructor({ PageComponent , levelAccess, pageCode , pageMenuPlacement , IconMaterialsComponent , menuItemName , menuLink , showMode , modulesContracts , servicesContracts }) {
 
         this._PageComponent = PageComponent;
         this._levelAccess = levelAccess;
@@ -11,10 +11,26 @@ export default class PageContractModel {
         this._menuLink = menuLink;
         this._showMode = showMode;
 
+        this._pageCode = pageCode;
+        this._pageMenuPlacement = pageMenuPlacement;
+        this._IconMaterialsComponent = IconMaterialsComponent;
+
         this._modulesContracts = modulesContracts;
         this._servicesContracts = servicesContracts;
 
         this._contractStore = new CreatorStore({ modulesContracts: this._modulesContracts,  servicesContracts: this._servicesContracts });
+    }
+
+    get pageCode() {
+        return this._pageCode;
+    }
+
+    get getPageMenuPlacement() {
+        return this._pageMenuPlacement;
+    }
+
+    get IconMaterialsComponent() {
+        return this._IconMaterialsComponent;
     }
 
     get PageComponent() {
@@ -35,6 +51,10 @@ export default class PageContractModel {
 
     get showMode() {
         return this._showMode;
+    }
+
+    get creatorStore() {
+        return  this._contractStore;
     }
 
     getReducer = () => {

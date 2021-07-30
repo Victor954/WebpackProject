@@ -1,51 +1,80 @@
 import React from 'react';
+import { useSelector , useDispatch} from 'react-redux';
 
-import { Button , Avatar , Typography , Menu , MenuItem} from '@material-ui/core';
-import './UserMenuComponent.scss';
+import { action_visible_user_menu_module } from '../../store/MenuActionsCreator';
 
-export default function UserMenuComponent (props) {
+import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined';
+import PersonOutlineOutlinedIcon from '@material-ui/icons/PersonOutlineOutlined';
+import ExitToAppOutlinedIcon from '@material-ui/icons/ExitToAppOutlined';
+
+import { 
+    MenuItem, 
+    Popper, 
+    Paper, 
+    ClickAwayListener, 
+    MenuList, 
+    ListItemIcon, 
+    ListItemText
+} from '@material-ui/core';
+
+export default function UserMenuComponent ({ anchorEl }) {
+
+    const [arrowRef, setArrowRef] = React.useState(null);
+    const isMenuUserVisible = useSelector((state) => state.headerData.menuModule.menuData.menuUserVisible);
+    const dispatch = useDispatch();
 
 
-    const [anchorEl , setAnchorEl] = React.useState(null); 
+    const handleClose = (event) => {
 
-    const user = {
-        login: 'Login',
-        email: 'email@email.com'
+        if (anchorEl && anchorEl.contains(event.target)) {
+          return;
+        }
+        
+        setApplaySelectMenu(false);
     };
 
-    const onClickAvatarHandler = (event) => {
-        setAnchorEl(event.currentTarget);
+    const setApplaySelectMenu = (isMenuUserVisible) => {
+
+        dispatch(action_visible_user_menu_module(isMenuUserVisible))
     }
 
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-
-    if(user){
+    const getMenuItem = (IconComponent , label) => {
 
         return (
-            <div className="user-box">
-                <Typography className="email">{ user.email }</Typography>
-                <Avatar onClick={onClickAvatarHandler} classes={{colorDefault: 'user-avatar-color'}}>U</Avatar>
-
-                <Menu
-                    id="simple-menu"
-                    anchorEl={anchorEl}
-                    keepMounted
-                    open={Boolean(anchorEl)}
-                    onClose={handleClose}
-                >
-                    <MenuItem onClick={handleClose}>Profile</MenuItem>
-                    <MenuItem onClick={handleClose}>My account</MenuItem>
-                    <MenuItem onClick={handleClose}>Logout</MenuItem>
-                </Menu>
-            </div>
-        )
-    } else {
-
-        return (
-            <Button classes={{root: 'login-button' , label:'login-button-label'}}>Войти</Button>
+            <MenuItem onClick={handleClose}>
+                <ListItemIcon>
+                    <IconComponent fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary={label} />
+            </MenuItem>
         )
     }
 
+    return (
+
+        <Popper 
+            open={isMenuUserVisible} 
+            anchorEl={anchorEl} 
+            transition
+            disablePortal={true}
+            placement="bottom-end"
+            modifiers={{
+                arrow:{
+                    enabled: true,
+                    element: arrowRef
+                }
+            }}>
+            
+            <span className="arrow" ref={setArrowRef}></span>
+            <Paper>
+                <ClickAwayListener onClickAway={handleClose}>
+                    <MenuList autoFocusItem={isMenuUserVisible}>
+                            { getMenuItem(ShoppingCartOutlinedIcon , 'Корзина') }
+                            { getMenuItem(PersonOutlineOutlinedIcon , 'Аккаунт') }
+                            { getMenuItem(ExitToAppOutlinedIcon , 'Выйти') }
+                    </MenuList>
+                </ClickAwayListener>
+            </Paper>
+        </Popper>
+    );
 }

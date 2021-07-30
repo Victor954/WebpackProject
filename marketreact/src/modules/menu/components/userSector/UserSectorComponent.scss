@@ -1,0 +1,101 @@
+$white: #fff;
+$grey: #D7D7D9;
+$dark-grey: #A1A2A6;
+$black: #0D0D0D;
+
+$base-color: #282740;
+$base-color-dark:#020126;
+
+$red: #D94B2B;
+
+@mixin user-avatar-select-style ()
+{   
+    border-color: $base-color;
+    background-color: $grey;
+    color: $base-color;
+}
+
+@mixin user-avatar-style ()
+{   
+    background-color: $base-color;
+    color:$grey;
+    border:solid 5px;
+    transition: all .2s;
+}
+
+/*#region LoginButton*/
+
+.login-button {
+    background-color: inherit;
+    border:solid 2px $base-color-dark;
+    padding: 6px 30px;
+
+    .login-button-label {
+        color:$black;
+    }
+}
+
+.login-button:hover {
+    transition: all .2s;
+    border-color: $base-color;
+    background-color: $base-color;
+}
+
+.login-button:hover > .login-button-label {
+    color:$white;
+}
+
+/*#endregion LoginButton*/
+
+/*#region User*/
+.user-box {
+    display: flex;
+
+    .email {
+        font-weight: 500;
+        margin-right: 15px;
+        line-height: 1;
+        padding: 16px 0px;
+        display: flex;
+    }
+
+    .user-avatar-color {
+        @include user-avatar-style();
+
+        &:hover{
+            cursor: pointer;
+            @include user-avatar-select-style();
+        }
+    }
+
+    .user-avatar-select-color {
+        @include user-avatar-style();
+        @include user-avatar-select-style();
+
+        box-shadow: 0px 0px 10px lighten($base-color , 30%) ;
+    }
+
+    .arrow{
+        position: relative;
+        display: block;
+        width: 1rem;
+        height: .5rem;
+        margin: 0 .3rem;
+
+        &:before , &:after {
+            box-sizing: border-box;
+            position: absolute;
+            display: block;
+            content: "";
+            border-color: transparent;
+            border-style: solid;
+            border-width: 0 .5rem .5rem .5rem;
+        } 
+
+        &:after {
+            top: 1px;
+            border-bottom-color: #fff;
+        }
+    }
+}
+/*#endregion User*/
