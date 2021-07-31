@@ -13,16 +13,16 @@ export default function RegisterMainComponent(props) {
                 <h2 className={styles['title']}>Регистрация</h2>
 
                 <div className={styles['group-inputs']}>
-                    <TextField id="standard-basic" classes={{root: styles['input-filed-root']}} label="Email"></TextField>
+                    <TextField size="small" variant="outlined" classes={{root: styles['input-filed-root']}} label="Email"></TextField>
                 </div>
                 <div className={styles['group-inputs']}>
-                    <TextField id="standard-basic" classes={{root: styles['input-filed-root']}} label="Логин"></TextField>
+                    <TextField size="small" variant="outlined" classes={{root: styles['input-filed-root']}} label="Логин"></TextField>
                 </div>
                 <div className={styles['group-inputs']}>
-                    <TextField id="standard-basic" classes={{root: styles['input-filed-root']}} label="Пароль"></TextField>
+                    <TextField size="small" variant="outlined" classes={{root: styles['input-filed-root']}} label="Пароль"></TextField>
                 </div>
                 <div className={styles['group-inputs']}>
-                    <TextField id="standard-basic" classes={{root: styles['input-filed-root']}} label="Повторите пароль"></TextField>
+                    <TextField size="small" variant="outlined" classes={{root: styles['input-filed-root']}} label="Повторите пароль"></TextField>
                 </div>
                 <div className={styles['group-button']}>
                     <Button color="primary" variant="contained" className={styles['sender-btn']}>Регистрация</Button>

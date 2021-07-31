@@ -1,15 +1,37 @@
-.borderline{
-    border-left: 1px solid black;
+@import './../../application_theme//theme_palette.scss';
+
+.col-6{
+    width: 49%;
 }
 
-.col-auth {
-    width: 50%;
+.col-1{
+    width: 2%;
 
-    &.left {
-        float: left;
+    .borderline{
+        height: 60%;
+        top: 20%;
+        position: relative;
+        width: 1px;
+        background-color: lighten($grey, 5%) ;
+        display: block;
+    }
+}
+
+.col-flex{
+    display: flex;
+    align-items: center;
+    height: 80vh;
+
+    .col-auth {
+        width: 50%;
+        padding: 0px 40px;
     }
 
     &.right {
-        float: right;
+        justify-content: flex-end;
+    }
+
+    &.left {
+        justify-content: flex-start;
     }
 }
