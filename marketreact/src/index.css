@@ -2,3 +2,7 @@
 @import url(https://fonts.googleapis.com/icon?family=Material+Icons);
 
 @import 'bootstrap/dist/css/bootstrap-grid.min.css';
+
+body {
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+}

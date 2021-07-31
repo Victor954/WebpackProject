@@ -1,0 +1,29 @@
+@import './theme_palette.scss';
+
+.form-box{
+
+    .sender-btn {
+        padding: 6px 25px;
+    }
+
+    .title {
+        text-align: center;
+    }
+
+    .group-inputs{
+        margin-bottom: 1rem;
+        display: flex;
+
+        .input-filed-root{
+            width: 100%;
+        }
+    }
+
+    .group-button {
+        @extend .group-inputs;
+        margin-top: 2rem;
+        justify-content: center;
+    }
+
+}
+

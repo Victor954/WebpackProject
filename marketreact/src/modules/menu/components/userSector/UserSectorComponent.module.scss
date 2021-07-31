@@ -1,12 +1,4 @@
-$white: #fff;
-$grey: #D7D7D9;
-$dark-grey: #A1A2A6;
-$black: #0D0D0D;
-
-$base-color: #282740;
-$base-color-dark:#020126;
-
-$red: #D94B2B;
+@import '../../../../application_theme/theme_palette.scss';
 
 @mixin user-avatar-select-style ()
 {   

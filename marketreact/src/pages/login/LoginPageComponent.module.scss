@@ -1,0 +1,15 @@
+.borderline{
+    border-left: 1px solid black;
+}
+
+.col-auth {
+    width: 50%;
+
+    &.left {
+        float: left;
+    }
+
+    &.right {
+        float: right;
+    }
+}
