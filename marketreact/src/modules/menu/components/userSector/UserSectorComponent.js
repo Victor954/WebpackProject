@@ -11,12 +11,12 @@ import {
 
 import UserMenu from '../userMenu/UserMenuComponent';
 
-import './UserSectorComponent.scss';
+import styles from  './UserSectorComponent.module.scss';
 
 export default function USerSectorComponent (props) {
 
-    const classAvatarActive = 'user-avatar-select-color';
-    const classAvatar = 'user-avatar-color';
+    const classAvatarActive = styles['user-avatar-select-color'];
+    const classAvatar = styles['user-avatar-color'];
 
     const anchorRef = React.useRef(null);
 
@@ -38,8 +38,8 @@ export default function USerSectorComponent (props) {
     if(userData.token){
 
         return (
-            <div className="user-box">
-                <Typography className="email">{ userData.email }</Typography>
+            <div className={styles['user-box']}>
+                <Typography className={styles['email']}>{ userData.email }</Typography>
                 <Avatar onClick={onClickAvatarHandler}  ref={anchorRef} classes={{colorDefault: getClassName()}}>U</Avatar>
 
                 <UserMenu anchorEl={anchorRef.current}/>
@@ -48,7 +48,7 @@ export default function USerSectorComponent (props) {
     } else {
 
         return (
-            <Button classes={{root: 'login-button' , label:'login-button-label'}}>Войти</Button>
+            <Button classes={{root: styles['login-button'] , label:styles['login-button-label']}}>Войти</Button>
         )
     }
 

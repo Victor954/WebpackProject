@@ -4,7 +4,7 @@ import { Link  } from "react-router-dom";
 import { ShowStateModelEnum } from '../../../helpers/models/ShowModeEnum';
 import UserSector from './userSector/UserSectorComponent';
 
-import './MenuMainComponent.scss';
+import styles from './MenuMainComponent.module.scss';
 
 export default function MenuMainComponent({ contracts }) {
 
@@ -14,7 +14,7 @@ export default function MenuMainComponent({ contracts }) {
 
             if (contract.showMode !== ShowStateModelEnum.neverShow) {
                 return (
-                    <ListItem  className="menu-list-item" key={contract.menuLink}>
+                    <ListItem  className={styles['menu-list-item']} key={contract.menuLink}>
                         <Link to={contract.menuLink} >{contract.menuItemName}</Link>
                     </ListItem>
                 )
@@ -29,7 +29,7 @@ export default function MenuMainComponent({ contracts }) {
             <AppBar position="static" color="default">
                 <Toolbar>
                     
-                    <List className="menu-list">
+                    <List className={styles['menu-list']}>
                         {  getMenuItems() }
                     </List>
                     
