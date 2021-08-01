@@ -1,7 +1,6 @@
 import { getState } from './../../helperService/StateHelper';
 
-
-export const authUserDataStore = getState({
+export const userDataStore = getState({
     token: null,
     login: '',
     email: ''

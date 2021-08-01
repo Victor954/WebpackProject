@@ -5,7 +5,7 @@ export default class CreatorStore {
 
     constructor({ modulesContracts = [], servicesContracts = [] }){
   
-      this._modulesContracts = modulesContracts;
+      this._modulesContracts = modulesContracts.filter(contract => contract.reducer);
       this._servicesContracts = servicesContracts;
 
     }

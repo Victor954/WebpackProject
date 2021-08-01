@@ -1,10 +1,10 @@
 import ServiceContractModel from '../../helpers/contracts/ServiceContractModel';
-import rootReducer from './store/AuthReducers';
-import rootSaga from './store/AuthSaga';
+import rootReducer from './store/UserReducers';
+import rootSaga from './store/UserSaga';
 
 
 export default new ServiceContractModel({
     saga: rootSaga,
     reducer: rootReducer,
-    code: 'authServiceModel'
+    code: 'userServiceModel'
 });

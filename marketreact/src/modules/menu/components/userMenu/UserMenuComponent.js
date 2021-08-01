@@ -20,7 +20,7 @@ import {
 export default function UserMenuComponent ({ anchorEl }) {
 
     const [arrowRef, setArrowRef] = React.useState(null);
-    const isMenuUserVisible = useSelector((state) => state.headerData.menuModule.menuData.menuUserVisible);
+    const isMenuUserVisible = useSelector((state) => state.headerPageData.menuModule.menuData.menuUserVisible);
     const dispatch = useDispatch();
 
 

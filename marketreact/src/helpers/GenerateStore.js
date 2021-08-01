@@ -13,7 +13,7 @@ export const getReduxData = (servicesContracts , pagesContracts) => {
       mainData: mainServicesStore.getReducer()
     }
 
-    const entiresArray = pagesCreatorsStore.map((creatorStore , index) => [`${pagesContracts[index].pageCode}Data` , creatorStore.getReducer()]);
+    const entiresArray = pagesCreatorsStore.map((creatorStore , index) => [`${pagesContracts[index].pageCode}PageData` , creatorStore.getReducer()]);
     const pagesReducers = Object.fromEntries(new Map(entiresArray));
     
     const reducresObject = {...mainReducresObject , ...pagesReducers};

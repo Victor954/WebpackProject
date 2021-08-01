@@ -20,8 +20,8 @@ export default function USerSectorComponent (props) {
 
     const anchorRef = React.useRef(null);
 
-    const isMenuUserVisible = useSelector((state) => state.headerData.menuModule.menuData.menuUserVisible);
-    const userData = useSelector((state) => state.mainData.authServiceModel.authUserData.data);
+    const isMenuUserVisible = useSelector((state) => state.headerPageData.menuModule.menuData.menuUserVisible);
+    const userData = useSelector((state) => state.mainData.userServiceModel.userData.data);
 
     const dispatch = useDispatch();
 

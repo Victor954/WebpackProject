@@ -14,7 +14,7 @@ export function LoaderRoute ({pageContract , reduxData , ...rest}) {
 
 export function PrivateRoute({ pageContract, reduxData , ...rest }) {
 
-    const auth = useSelector((state) => state.mainData.authServiceModel.authUserData.data.token);
+    const auth = useSelector((state) => state.mainData.userServiceModel.userData.data.token);
 
     const Component = (auth) ? initPage(pageContract ,reduxData ) : null;
 
@@ -45,7 +45,7 @@ function initPage(pageContract , reduxData) {
   sagaMiddleware.run(pageContract.getSaga());
 
   if(pageReducer){
-    reducresObject.pageData = pageReducer;
+    reducresObject[`${pageContract.pageCode}PageData`] = pageReducer;
   }
 
   store.replaceReducer(combineReducers(reducresObject));

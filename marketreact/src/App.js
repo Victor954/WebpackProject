@@ -2,7 +2,7 @@ import HomeContract from './pages/home';
 import LoginContract from './pages/login';
 import HeaderContract from './pages/header';
 
-import AuthContract from './services/authService'
+import UserContract from './services/userService'
 
 import React from 'react';
 import { Provider } from 'react-redux';
@@ -21,7 +21,7 @@ const jss = create({
 
 const loadPagesContracts = [HomeContract, LoginContract];
 
-const mainServicesContracts = [AuthContract]
+const mainServicesContracts = [UserContract]
 const mainPagesContracts = [HeaderContract];
 
 export default function App(props) {

@@ -1,14 +1,29 @@
 import { call, put, takeLatest } from 'redux-saga/effects'
 import * as actionsCreator from './AuthActionsCreator';
-import { FETCH_LOGIN_IN_REQUEST , FETCH_LOGIN_OUT_REQUEST } from './AuthActions';
+import { FETCH_LOGINING_REQUEST  , FETCH_LOGIN_IN_REQUEST, FETCH_LOGIN_OUT_REQUEST } from './AuthActions';
 import * as Api from '../api/LoginApi';
+
+
+function* fetchLogining(action) {
+    try {
+
+        yield put(actionsCreator.logining.action_loading(true));
+
+       const loginingData = yield call(Api.LoginingCheck , action.payload);
+
+       yield put(actionsCreator.logining.action_loading(false));
+       yield put(actionsCreator.logining.action_succeeded(loginingData));
+    } catch (e) {
+        yield put(actionsCreator.logining.action_failed(e.message));
+    }
+}
 
 function* fetchLoginIn(action) {
     try {
 
         yield put(actionsCreator.loginIn.action_loading(true));
 
-       const loginData = yield call(Api.LoginIn);
+       const loginData = yield call(Api.LoginIn , action.payload);
 
        yield put(actionsCreator.loginIn.action_loading(false));
        yield put(actionsCreator.loginIn.action_succeeded(loginData));
@@ -32,6 +47,5 @@ function* fetchLoginIn(action) {
  }
 
  export default function* productsSaga() {
-   yield takeLatest(FETCH_LOGIN_IN_REQUEST, fetchLoginIn);
-   yield takeLatest(FETCH_LOGIN_OUT_REQUEST, fetchLoginOut);
+    yield takeLatest(FETCH_LOGINING_REQUEST , fetchLogining);
  }
