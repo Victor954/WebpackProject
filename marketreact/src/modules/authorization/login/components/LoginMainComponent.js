@@ -3,85 +3,11 @@ import { useDispatch , useSelector } from 'react-redux';
 import { TextField  , Button} from '@material-ui/core';
 import { useLocation , useHistory } from 'react-router-dom';
 import validator from 'validator';
+import { ValidatorForm } from '../../helper/ValidatorForm';
 
 import { logining , action_backup_loading } from '../../../../services/authorizationService/store/AuthActionsCreator';
 
 import styles from './LoginMainComponent.module.scss';
-
-
-class ValidatorForm {
-
-    constructor(textFieldsData , validationRules)  {
-        this._textFieldsData = textFieldsData;
-        this._validationRules = validationRules;
-        this._cache = {}
-    }
-
-    getState = () => {
-
-        const propertiesArray = this._textFieldsData.map(filedData => [filedData.name , '']);
-        const fieldsObject = Object.fromEntries(new Map(propertiesArray));
-
-        return {
-            ...fieldsObject
-        }
-    }
-
-    getIsValidate = () => {
-
-        let result = true;
-
-        for(const key in this._cache) {
-
-            const value = this._cache[key];
-            value.isChanged = true;
-
-            if(!value.isValid){
-                result = false;
-            }
-        }
-
-        return result;
-    }
-
-    setChanged = (value ,name) => {
-        this._cache[name].isChanged = value;
-    }
-
-    getValid = (value , name) => {
-
-        const validators = this._validationRules[name].map(valid => valid(value));
-        const changed = (this._cache[name] === undefined) ? false : this._cache[name].isChanged;
-
-        for(const {isValidate , textError } of validators) { 
-                
-            if(!isValidate){
-                
-                this._setCache(name , {
-                    name: name,
-                    textError: textError,
-                    isValid: false,
-                    isChanged: changed
-                });
-
-                return this._cache[name];
-            }
-        }
-
-        this._setCache(name , {
-            name: name,
-            textError: '',
-            isValid: true,
-            isChanged: changed
-        });
-
-        return this._cache[name];
-    }
-
-    _setCache = (name , valid) => {
-        this._cache[name] = valid;
-    }
-}
 
 const getValidRule = (validatorRule , textError) => {
 
@@ -90,6 +16,46 @@ const getValidRule = (validatorRule , textError) => {
         textError: textError
     };
 }
+
+
+function useForceUpdate(){
+    const [value, setValue] = React.useState(0);
+    return () => setValue(value => value + 1);
+}
+
+function textFieldValidate (WrappedComponent) {
+
+    return class extends React.Component {
+        
+        constructor(props) {
+            super(props);
+        }
+
+        getPropsTextField = () => {
+
+            const { name , label , value , onChangeInput, validate , disable}  = this.props;
+    
+            return {
+                size:'small',
+                variant:'outlined',
+                classes:{root: styles['input-filed-root']},
+                disabled: disable,
+                onChange: onChangeInput,
+                value:value,
+                label:label,
+                name:name,
+                helperText:(validate.isChanged) ? validate.textError : '',
+                error:!validate.isValid && validate.isChanged
+            }
+        }
+
+        render () {
+            return <WrappedComponent  { ...this.getPropsTextField() } />;
+        }
+    }
+}
+
+const TextFieldValidate = textFieldValidate(TextField);
 
 export default function LoginMainComponent(props) {
 
@@ -101,6 +67,7 @@ export default function LoginMainComponent(props) {
     const userData = useSelector((state) => state.mainData.userServiceModel.userData.data);
     const loginingData = useSelector((state) => state.loginPageData.authorizationServiceModel.loginingData.data);
     const loadingLoginingData = useSelector((state) => state.loginPageData.authorizationServiceModel.loginingData.loading);
+    const forceUpdate = useForceUpdate();
 
     const textFielsData = [
         {
@@ -113,31 +80,32 @@ export default function LoginMainComponent(props) {
         }
     ]
 
-    const validationRules = {
+    const validatorForm =  new ValidatorForm({
 
         loginEmail: [
-
+    
             (value) => getValidRule(!validator.isEmpty(value) , 'Поле должно быть заполнено'),
             (value) => getValidRule(validator.isEmail(value) , 'Это не Email'),
             (value) => getValidRule(!loginingData.form.isException , loginingData.form.msg )
         ],
         password: [
-
+    
             (value) =>  getValidRule(!validator.isEmpty(value) , 'Поле должно быть заполнено'),
             (value) => getValidRule(!loginingData.form.isException , loginingData.form.msg )
         ]
-    }
+    });
 
-    const validatorForm = new ValidatorForm(textFielsData ,validationRules);
-
-    const [loginState , setLoginState] = React.useState(validatorForm.getState());
-
+    const [loginState , setLoginState] = React.useState({
+        loginEmail:'',
+        password:''
+    });
 
     const onChangeInputHandler = (e) => {
 
         const { name, value } = e.target;
 
-
+        validatorForm.setChanged(true, name);
+        
         setLoginState(prevState => ({...prevState , [name]: value.replace(/\s/g,'') }));
 
         if(loginingData.form.isException){
@@ -149,6 +117,8 @@ export default function LoginMainComponent(props) {
 
         if(validatorForm.getIsValidate()){
             dispatch(logining.action_request(getLoginData()));
+        } else {
+            forceUpdate();
         }
 
     }
@@ -165,38 +135,23 @@ export default function LoginMainComponent(props) {
         }
     }
 
-    const getPropsTextField = ({name , label}) => {
-
-        const value = loginState[name];
-        const validate = validatorForm.getValid(value, name);
-
-        const onChangeHandler = (e) => {
-
-            validatorForm.setChanged(true, name);
-            onChangeInputHandler(e);
-        }
-
-        return {
-            size:'small',
-            variant:'outlined',
-            classes:{root: styles['input-filed-root']},
-            disabled: loadingLoginingData,
-            onChange: onChangeHandler,
-            value:value,
-            label:label,
-            name:name,
-            helperText:(validate.isChanged) ? validate.textError : '',
-            error:!validate.isValid && validate.isChanged
-        }
-    } 
-
     const getFields = (textFielsData) => {
 
         return textFielsData.map(fieldData => {
 
+            const name = fieldData.name;
+            const value = loginState[name];
+
             return (<div className={styles['group-inputs']} key={fieldData.name}>
-                <TextField { ...getPropsTextField(fieldData) }>
-                </TextField>
+                <TextFieldValidate 
+                    name={name} 
+                    label={fieldData.label} 
+                    disable={loadingLoginingData} 
+                    value={value} 
+                    validate={validatorForm.getValid(value, name)}
+                    onChangeInput={onChangeInputHandler} 
+                >
+                </TextFieldValidate>
             </div>)
         });
     }
