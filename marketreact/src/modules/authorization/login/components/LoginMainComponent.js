@@ -1,9 +1,13 @@
 import React from 'react';
 import { useDispatch , useSelector } from 'react-redux';
 import { TextField  , Button} from '@material-ui/core';
-import { useLocation , useHistory } from 'react-router-dom';
+//import { useLocation , useHistory } from 'react-router-dom';
 import validator from 'validator';
-import { ValidatorForm , getValidRule } from '../../helper/ValidatorForm';
+import { ValidatorForm , getValidRule , getLoginValidRule , getPasswordValidRule } from '../../helper/ValidatorForm';
+import { setAsChanged } from '../../helper/ValidatorFormDom';
+
+import ValidatedPasswordTextFiled from '../../components/ValidatedPasswordTextFiled';
+import ValidatedTextField from '../../components/ValidatedTextField';
 
 import { logining , action_backup_loading } from '../../../../services/authorizationService/store/AuthActionsCreator';
 
@@ -27,26 +31,42 @@ export default function LoginMainComponent(props) {
         },
         Password:{
             textValue: '',
-            isChanegd: false
+            isChanegd: false,
+            isVisible: false
         }
     });
+
+    //#region  Установка правил для валидации
+
+    const getEmailLoginValid = (value) => {
+        
+        const validatorEmail = validator.isEmail(value);
+
+        if(!validatorEmail) {
+
+            return getLoginValidRule(value);
+        }
+
+        return getValidRule(validatorEmail , 'Введите Email');
+    }
 
     const validationRules =  {
 
         EmailLogin: [
-    
-            (value) => getValidRule(!validator.isEmpty(value) , 'Поле должно быть заполнено'),
-            (value) => getValidRule(validator.isEmail(value) , 'Это не Email'),
+            
+            (value) => getEmailLoginValid(value),
             (value) => getValidRule(!loginingData.form.isException , loginingData.form.msg )
         ],
         Password: [
     
-            (value) =>  getValidRule(!validator.isEmpty(value) , 'Поле должно быть заполнено'),
+            (value) =>  getPasswordValidRule(value),
             (value) => getValidRule(!loginingData.form.isException , loginingData.form.msg )
         ]
     }
 
-    const {setCache , getFeildValid , getFormValid} = new ValidatorForm(validationRules);
+    //#endregion
+
+    const { initialValdi , getFormValid} = new ValidatorForm(validationRules);
 
 
     const getLoginData = () => {
@@ -61,23 +81,21 @@ export default function LoginMainComponent(props) {
         }
     }
 
-    const SetAsChanged = () => {
+    
+    //#region События DOM
 
-        for (const key of Object.keys(loginState)) {
+    const onVisibleHandler = (name , isVisible) => {
 
-            setLoginState(prevState => ({
-                ...prevState, 
-                [key]: { 
-                    ...prevState[key], 
-                    isChanegd: true,
-                }
-            }));
-        }
+        setLoginState(prevState => ({
+            ...prevState, 
+            [name]: { 
+                ...prevState[name], 
+                isVisible: isVisible
+            }
+        }));
     }
 
-    
-
-    const OnChangeInputHandler = (e) => { 
+    const onChangeInputHandler = (e) => { 
 
         const {value , name} = e.target;
 
@@ -96,50 +114,48 @@ export default function LoginMainComponent(props) {
 
     }
 
-    const OnClickSubmitForm = (e) => {
+    const onClickSubmitForm = (e) => {
 
         e.preventDefault();
-        SetAsChanged();
+        setAsChanged(loginState , setLoginState);
 
         if(getFormValid()) {
             dispatch(logining.action_request(getLoginData()));
         }
     }
 
-    const getField = (name , label ) => {
+    //#endregion
 
-        const { textValue  , isChanegd } = loginState[name];
-
-        const { msg , isValidate }  = getFeildValid(textValue, name);
-        setCache(name , msg , isValidate);
-
-        return (
-            <div className={styles['group-inputs']}>
-                <TextField
-                    size='small'
-                    variant='outlined'
-                    classes={{root: styles['input-filed-root']}}
-                    name={name} 
-                    label={label}
-                    disabled={loadingLoginingData} 
-                    value={textValue} 
-                    helperText={(isChanegd) ? msg : ''}
-                    onChange={OnChangeInputHandler}
-                    error={!isValidate && isChanegd}
-                ></TextField>
-            </div>
-        )
+    const getProperties = (name) => {
+        
+        return {
+            name:name,
+            className: styles['group-inputs'],
+            classes:{root: styles['input-filed-root']},
+            disabled:loadingLoginingData, 
+            filedData: { ...loginState[name] }, 
+            initialValdi, 
+            onChange:onChangeInputHandler
+        }
     }
 
     return (
         <div className="col-12">
 
-            <form className={styles['form-box']} noValidate autoComplete="off" onSubmit={OnClickSubmitForm}>
+            <form className={styles['form-box']} noValidate autoComplete="off" onSubmit={onClickSubmitForm}>
 
                 <h2 className={styles['title']}>Войти</h2>
 
-                { getField('EmailLogin' , 'Логин или Email') }
-                { getField('Password' , 'Пароль') }
+
+                <ValidatedTextField 
+                    label = "Логин или Email"
+                    {...getProperties("EmailLogin")}/>
+                
+                <ValidatedPasswordTextFiled 
+                    label = "Пароль"
+                    onVisible={onVisibleHandler}
+                    {...getProperties("Password")}/>
+
 
                 <div className={styles['group-button']}>
                     <Button 
