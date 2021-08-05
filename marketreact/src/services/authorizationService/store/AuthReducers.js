@@ -1,34 +1,40 @@
 import { combineReducers } from 'redux';
+import { reducerServiceSaga } from '../../helperService/ReducerHelper';
 
 import * as Actions from './AuthActions';
 import * as State from './AuthInitialState';
 
+
 const loginingReducer = (state = State.loginingDataState , action) => {
 
     switch(action.type) {
+
         case Actions.FETCH_LOGINING_BACKUP:
-            return { ...state , data: { ...state.data, form: {msg: '' , isException: false} } };
-        case Actions.FETCH_LOGINING_SUCCEEDED:
-            return { ...state , data: { ...state.data, form: action.payload } };
-        case Actions.LOADING_LOGINING:
-            return { ...state , loading: action.payload };
-        case Actions.FETCH_LOGINING_FAILED:
-            return  { ...state , errorLoading: action.payload };
+            return { ...state , data: { msg: '' , isException: false }};
         default:
-            return state;
+            return reducerServiceSaga(state , action , {
+                typeFailed: Actions.FETCH_LOGINING_FAILED,
+                typeLoading: Actions.LOADING_LOGINING,
+                typeSucceeded: Actions.FETCH_LOGINING_SUCCEEDED
+            });
     }
 }
-const registeringReducer = (state = State.registeringDataState , action) => {
+
+const emailCheckUniqueReducer = (state = State.emailCheckingDataState, action) => {
 
     switch(action.type) {
 
         default:
-            return state;
+            return reducerServiceSaga(state , action , {
+                typeFailed: Actions.FETCH_CHECK_UNIQUE_EMAIL_FAILED,
+                typeLoading: Actions.CHECK_UNIQUE_EMAIL_LOGINING,
+                typeSucceeded: Actions.FETCH_CHECK_UNIQUE_EMAIL_SUCCEEDED
+            });
     }
 }
 
 
 export default combineReducers({
-    loginingData: loginingReducer,
-    registeringData: registeringReducer
+    checkEmailUniqueData: emailCheckUniqueReducer,
+    loginingData: loginingReducer
 });

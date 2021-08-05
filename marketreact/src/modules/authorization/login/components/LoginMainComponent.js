@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch , useSelector } from 'react-redux';
-import { TextField  , Button} from '@material-ui/core';
+import { Button} from '@material-ui/core';
 //import { useLocation , useHistory } from 'react-router-dom';
 import validator from 'validator';
 import { ValidatorForm , getValidRule , getLoginValidRule , getPasswordValidRule } from '../../helper/ValidatorForm';
@@ -55,12 +55,12 @@ export default function LoginMainComponent(props) {
         EmailLogin: [
             
             (value) => getEmailLoginValid(value),
-            (value) => getValidRule(!loginingData.form.isException , loginingData.form.msg )
+            (value) => getValidRule(!loginingData.isException , loginingData.msg )
         ],
         Password: [
     
             (value) =>  getPasswordValidRule(value),
-            (value) => getValidRule(!loginingData.form.isException , loginingData.form.msg )
+            (value) => getValidRule(!loginingData.isException , loginingData.msg )
         ]
     }
 
@@ -99,7 +99,7 @@ export default function LoginMainComponent(props) {
 
         const {value , name} = e.target;
 
-        if(loginingData.form.isException){
+        if(loginingData.isException){
             dispatch(action_backup_loading());
         }
 

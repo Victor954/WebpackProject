@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector , useDispatch } from 'react-redux';
 import {  Button } from '@material-ui/core';
 import validator from 'validator';
 
@@ -7,14 +7,19 @@ import { ValidatorForm , getValidRule, getLoginValidRule , getPasswordValidRule 
 import { setAsChanged } from '../../helper/ValidatorFormDom';
 import ValidatedPasswordTextFiled from '../../components/ValidatedPasswordTextFiled';
 import ValidatedTextField from '../../components/ValidatedTextField';
+import { checkUniqueEmail } from '../../../../services/authorizationService/store/AuthActionsCreator';
 
 import styles from './RegisterMainComponent.module.scss';
 
 export default function RegisterMainComponent(props) {
 
+    const dispatch = useDispatch();
 
-    const loadingLoginingData = useSelector((state) => state.loginPageData.authorizationServiceModel.loginingData.loading);
+    const getAuthServiceModel = (state) => state.loginPageData.authorizationServiceModel;
 
+    const loadingLoginingData = useSelector((state) => getAuthServiceModel(state).loginingData.loading);
+    const checkEmail = useSelector((state) => getAuthServiceModel(state).checkEmailUniqueData.data);
+    const loadingCheckingEmail = useSelector((state) => getAuthServiceModel(state).checkEmailUniqueData.loading);
 
     const [registerState , setRegisterState] = React.useState({
         Email:{
@@ -42,7 +47,8 @@ export default function RegisterMainComponent(props) {
 
         Email: [        
             (value) =>  getValidRule(!validator.isEmpty(value) , 'Поле должно быть заполнено'),
-            (value) => getValidRule(validator.isEmail(value) , 'Введите Email')
+            (value) => getValidRule(validator.isEmail(value) , 'Введите Email'),
+            (value) => getValidRule(!checkEmail.isException , checkEmail.msg)
         ],
         Login: [
             (value) => getLoginValidRule(value)
@@ -60,9 +66,12 @@ export default function RegisterMainComponent(props) {
     const { initialValdi , getFormValid} = new ValidatorForm(validationRules);
 
 
-    const onChangeInputHandler = (e) => { 
+    const validUniqueEmail = (value) => {
 
-        const {value , name} = e.target;
+        dispatch(checkUniqueEmail.action_request(value));
+    }
+
+    const setValueFiledState = ( value, name ) => {
 
         setRegisterState(prevState => ({
             ...prevState, 
@@ -72,7 +81,16 @@ export default function RegisterMainComponent(props) {
                 isChanegd: true
             }
         }));
+    }
+ 
+    const onChangeInputHandler = (e) => { 
 
+        const {value , name} = e.target;
+
+        setValueFiledState(value , name);
+
+        if(name === 'Email') { validUniqueEmail(value) }
+            
     }
 
     const onVisibleHandler = (name , isVisible) => {
@@ -96,12 +114,12 @@ export default function RegisterMainComponent(props) {
         }
     }
 
-    const getProperties = (name) => {
+    const getProperties = ({name , classes = null}) => {
         
         return {
             name:name,
             className: styles['group-inputs'],
-            classes:{root: styles['input-filed-root']},
+            classes:classes ?? {root: styles['input-filed-root']},
             disabled:loadingLoginingData, 
             filedData: { ...registerState[name] }, 
             initialValdi, 
@@ -118,27 +136,27 @@ export default function RegisterMainComponent(props) {
 
                 <ValidatedTextField 
                     label = "Email"
-                    {...getProperties("Email")}/>
+                    {...getProperties({name: "Email"})}/>
 
                 <ValidatedTextField 
                     label = "Логин"
-                    {...getProperties("Login")}/>
+                    {...getProperties({name: "Login"})}/>
 
                 <ValidatedPasswordTextFiled 
                     label = "Пароль"
                     onVisible={onVisibleHandler}
-                    {...getProperties("Password")}/>
+                    {...getProperties({name: "Password"})}/>
 
 
                 <ValidatedPasswordTextFiled 
                     label = "Повторите пароль"
                     onVisible={onVisibleHandler}
-                    {...getProperties("RepeatPassword")}/>
+                    {...getProperties({name: "RepeatPassword"})}/>
 
 
                 <div className={styles['group-button']}>
                     <Button 
-                        disabled={loadingLoginingData}
+                        disabled={[loadingLoginingData , loadingCheckingEmail].some(loading => loading)}
                         color="primary"
                         type="submit"
                         variant="contained"

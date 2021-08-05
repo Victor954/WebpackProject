@@ -1,6 +1,12 @@
 import { getActions } from './../../helperService/ActionsCreatorHelper';
 import * as Actions from './AuthActions';
 
+export const checkUniqueEmail = getActions({
+    failedType: Actions.FETCH_CHECK_UNIQUE_EMAIL_FAILED,
+    succeededType: Actions.FETCH_CHECK_UNIQUE_EMAIL_SUCCEEDED,
+    requestType: Actions.FETCH_CHECK_UNIQUE_EMAIL_REQUEST,
+    loadingType: Actions.CHECK_UNIQUE_EMAIL_LOGINING
+});
 
 export const logining = getActions({
     failedType: Actions.FETCH_LOGINING_FAILED,

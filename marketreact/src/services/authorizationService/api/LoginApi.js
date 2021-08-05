@@ -1,19 +1,7 @@
 export async function LoginIn({login , email , password}) {
 
     return await new Promise((reslove, reject) => {
- 
-      if(password === '1') {
 
-         reslove(
-            {
-               token: '2HADT&AdfhhDSD',
-               login: login,
-               email: email
-            });
-
-      } else{
-         reject({ message: 'Неверный логин или пароль'});
-      }
     });
  }
 
@@ -39,10 +27,16 @@ export async function LoginingCheck({login , email , password}) {
 
       setTimeout(() => {
 
-         if(password !== '1'){
+         if(password !== '123456abc'){
             reslove({
                isException: true,
                msg: 'Не верный логин или пароль'
+            })
+         }
+         else {
+            reslove({
+               isException: false,
+               msg: ''
             })
          }
       } , 5000);
