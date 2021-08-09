@@ -1,6 +1,6 @@
 import { call, put } from 'redux-saga/effects'
 
-export function* fetchServiceBase({apiMethod , payload , middleware ,action_loading , action_succeeded  , action_failed}) {
+export function* fetchServiceBase({apiMethod , payload ,action_loading , action_succeeded  , action_failed}) {
 
     try {
         yield put(action_loading(true));
@@ -10,16 +10,12 @@ export function* fetchServiceBase({apiMethod , payload , middleware ,action_load
        yield put(action_loading(false));
        yield put(action_succeeded(data));
 
-       if(middleware !== undefined) {
-
-            const middlewareAction = middleware(data);
-
-            if(middlewareAction)
-                yield put(middlewareAction);
-       }
+       return data;
 
     } catch (e) {
        yield put(action_failed(e.message));
+
+       return e;
     }
 
 }

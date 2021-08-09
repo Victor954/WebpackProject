@@ -1,0 +1,1 @@
+export const REDIRECT_TO_PAGE = "REDIRECT_TO_PAGE";

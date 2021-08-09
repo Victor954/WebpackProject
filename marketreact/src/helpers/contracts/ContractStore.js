@@ -36,7 +36,7 @@ export default class CreatorStore {
       const context = this;
   
       return function* rootSaga() {
-          yield all( context._servicesContracts.map(contract => contract.saga()) );
+          yield all( context._servicesContracts.filter(contract => contract.saga).map(contract => contract.saga()) );
         }
     }
   }

@@ -3,11 +3,12 @@ import LoginContract from './pages/login';
 import HeaderContract from './pages/header';
 
 import UserContract from './services/userService'
+import MainContract from './services/mainService'
 
 import React from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Switch } from "react-router-dom";
-import { LoaderRoute, PrivateRoute } from './helpers/routing/ReduxRoute';
+import { LoaderRoute, PrivateRoute , Redirector } from './helpers/routing/ReduxRoute';
 import { getReduxData } from './helpers/GenerateStore';
 
 import { create } from 'jss';
@@ -21,7 +22,7 @@ const jss = create({
 
 const loadPagesContracts = [HomeContract, LoginContract];
 
-const mainServicesContracts = [UserContract]
+const mainServicesContracts = [UserContract , MainContract]
 const mainPagesContracts = [HeaderContract];
 
 export default function App(props) {
@@ -34,9 +35,13 @@ export default function App(props) {
         <Provider store={data.store}>
           <HeaderContract.PageComponent contracts={loadPagesContracts} />
           <Switch>
-            <PrivateRoute exact path="/" pageContract={HomeContract} reduxData={data} />
-            <LoaderRoute exact path="/login" pageContract={LoginContract} reduxData={data} />
 
+            <Redirector>
+
+              <PrivateRoute exact path="/" pageContract={HomeContract} reduxData={data} />
+              <LoaderRoute exact path="/login" pageContract={LoginContract} reduxData={data} />   
+
+            </Redirector>
           </Switch>
         </Provider>
       </StylesProvider>

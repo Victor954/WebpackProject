@@ -11,6 +11,19 @@ export function LoaderRoute ({pageContract , reduxData , ...rest}) {
     </Route>)
 }
 
+export function Redirector({children , ...rest}) {
+
+  const routingModel = useSelector(state => state.mainData.mainServiceModel.redirectData);
+
+  if(routingModel.send) {
+
+    return (<Redirect
+      to={routingModel.url}
+    />);
+  }
+
+  return children;
+}
 
 export function PrivateRoute({ pageContract, reduxData , ...rest }) {
 
