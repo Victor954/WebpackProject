@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch , useSelector } from 'react-redux';
 import { Button} from '@material-ui/core';
-//import { useLocation , useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import validator from 'validator';
 import { ValidatorForm , getValidRule , getLoginValidRule , getPasswordValidRule } from '../../helper/ValidatorForm';
 import { setAsChanged } from '../../helper/ValidatorFormDom';
@@ -15,12 +15,9 @@ import styles from './LoginMainComponent.module.scss';
 
 export default function LoginMainComponent(props) {
 
-    const dispatch = useDispatch()
-
-    //const history = useHistory();
-    //const location = useLocation();
-    
-    //const userData = useSelector((state) => state.mainData.userServiceModel.userData.data);
+    const dispatch = useDispatch();
+    const history = useHistory();
+    console.log(history);
     const loginingData = useSelector((state) => state.loginPageData.authorizationServiceModel.loginingData.data);
     const loadingLoginingData = useSelector((state) => state.loginPageData.authorizationServiceModel.loginingData.loading);
 
@@ -69,13 +66,28 @@ export default function LoginMainComponent(props) {
     const { initialValdi , getFormValid} = new ValidatorForm(validationRules);
 
 
+    const getLastNodeHistory = (location , value = null) => {
+
+        if(location) {
+
+            value = location;
+            return getLastNodeHistory(location.state , location);
+        }
+
+        return value.from;
+    }
+    
+
     const getLoginData = () => {
 
         const { EmailLogin , Password } = loginState;
         const nameLoginEmail = validator.isEmail(EmailLogin.textValue) ? 'email' : 'login';
+        const historyState = getLastNodeHistory(history.location);
+
+        const pathnameRedirect =  (historyState.pathname === '/login') ? '/' : historyState.pathname;
 
         return {
-            ...{ login: '', email: '', password: '' },
+            ...{ login: '', email: '', password: '' , pathname:pathnameRedirect },
             [nameLoginEmail]: EmailLogin.textValue,
             password: Password.textValue
         }

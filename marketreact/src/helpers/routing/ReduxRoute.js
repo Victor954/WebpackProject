@@ -1,4 +1,4 @@
-import { Redirect, Route } from "react-router-dom";
+import { Redirect, Route ,useParams } from "react-router-dom";
 import { combineReducers } from 'redux';
 import { useSelector } from 'react-redux'
 
@@ -24,6 +24,37 @@ export function Redirector({children , ...rest}) {
 
   return children;
 }
+
+export function PriveteUserRoute({pageContract, reduxData , ...rest}) {
+
+  const { email } = useParams();
+
+  const user = useSelector((state) => state.mainData.userServiceModel.userData.data);
+  const Component = (user.token) ? initPage(pageContract ,reduxData ) : null;
+
+  console.log(email);
+
+  return <Route
+    {...rest}
+    render={({ location }) =>
+    user.token ? (
+      <Redirect
+        to={{
+          pathname: `/${rest.path}/${user.email}`,
+          state: location
+        }}
+      />
+      ) : (
+        <Redirect
+          to={{
+            pathname: "/login",
+            state: { from: location }
+          }}
+        />
+      )
+    }
+  />
+} 
 
 export function PrivateRoute({ pageContract, reduxData , ...rest }) {
 

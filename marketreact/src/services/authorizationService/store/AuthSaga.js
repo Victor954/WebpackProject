@@ -10,7 +10,7 @@ import * as RegisterApi from '../api/RegisterApi';
 
 
 function* fetchLogining(action) {
-
+    
     const data = yield call(fetchServiceBase ,{
         apiMethod: Api.LoginingCheck,
         payload: action.payload,
@@ -18,8 +18,11 @@ function* fetchLogining(action) {
     });
 
     if(!data.isException) {
+
+        const { pathname } = action.payload;
+
         yield put (getUser.action_request());
-        yield put(action_redirect_to_page('/'));
+        yield put(action_redirect_to_page(pathname));
     }
 }
 
