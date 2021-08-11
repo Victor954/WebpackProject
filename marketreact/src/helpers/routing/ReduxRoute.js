@@ -1,7 +1,8 @@
 import React from 'react';
 import { Redirect, Route ,useParams , useLocation} from "react-router-dom";
-import { combineReducers } from 'redux';
-import { useSelector } from 'react-redux'
+import { combineReducers  } from 'redux';
+import { useSelector ,  useDispatch } from 'react-redux'
+import { action_redirect_to_page_restore } from '../../services/mainService/store/MainActionsCreator';
 
 export function LoaderRoute ({pageContract , reduxData , ...rest}) {
 
@@ -12,9 +13,19 @@ export function LoaderRoute ({pageContract , reduxData , ...rest}) {
     </Route>)
 }
 
-export function Redirector({children , ...rest}) {
+export function Redirector({children}) {
 
+  const location = useLocation();
   const routingModel = useSelector(state => state.mainData.mainServiceModel.redirectData);
+
+  const dispatch = useDispatch();
+
+  React.useEffect(() => {
+
+    if(location.pathname === routingModel.url && routingModel.send) {
+      dispatch(action_redirect_to_page_restore());
+    }
+  });
 
   if(routingModel.send) {
 
@@ -23,7 +34,7 @@ export function Redirector({children , ...rest}) {
     />);
   }
 
-  return children;
+  return children
 }
 
 function RouteEqualsEmail ({ Component , path  }) {

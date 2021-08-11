@@ -7,3 +7,11 @@ export const action_redirect_to_page = (value) => {
         payload: value
     }
 }
+
+export const action_redirect_to_page_restore= (value) => {
+
+    return {
+        type:Actions.REDIRECT_TO_PAGE_RESTORE,
+        payload: value
+    }
+}

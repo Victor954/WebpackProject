@@ -36,11 +36,14 @@ export default function App(props) {
         <Provider store={data.store}>
           <HeaderContract.PageComponent contracts={loadPagesContracts} />
           <Switch>
-            <Redirector>
+              
+              <Redirector>
+
               <PriveteUserRoute path="/cart" pageContract={CartContract} reduxData={data} />
               <LoaderRoute exact path="/" pageContract={HomeContract} reduxData={data} />
               <LoaderRoute exact path="/login" pageContract={LoginContract} reduxData={data} />
-            </Redirector>
+
+              </Redirector>
           </Switch>
         </Provider>
       </StylesProvider>
