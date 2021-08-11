@@ -1,4 +1,5 @@
-import { Redirect, Route ,useParams } from "react-router-dom";
+import React from 'react';
+import { Redirect, Route ,useParams , useLocation} from "react-router-dom";
 import { combineReducers } from 'redux';
 import { useSelector } from 'react-redux'
 
@@ -25,48 +26,63 @@ export function Redirector({children , ...rest}) {
   return children;
 }
 
-export function PriveteUserRoute({pageContract, reduxData , ...rest}) {
+function RouteEqualsEmail ({ Component , path  }) {
 
   const { email } = useParams();
+  const user = useSelector((state) => state.mainData.userServiceModel.userData.data);
+
+  if(email !== user.email) {
+
+    return <Redirect
+        to={`${path}/${user.email}`}
+      />
+  }
+
+  return <Component />
+}
+
+export function PriveteUserRoute({pageContract, reduxData , path , ...rest}) {
 
   const user = useSelector((state) => state.mainData.userServiceModel.userData.data);
   const Component = (user.token) ? initPage(pageContract ,reduxData ) : null;
 
-  console.log(email);
+  return (
 
-  return <Route
-    {...rest}
-    render={({ location }) =>
-    user.token ? (
-      <Redirect
-        to={{
-          pathname: `/${rest.path}/${user.email}`,
-          state: location
-        }}
-      />
-      ) : (
+    <React.Fragment>
+
+      <PrivateRoute { ...{ path: `${path}/:email` , ...rest } }>
+        <RouteEqualsEmail Component={Component} path={path}/>
+      </PrivateRoute>
+
+      <Route exact path={[path , `${path}/`]}>
         <Redirect
-          to={{
-            pathname: "/login",
-            state: { from: location }
-          }}
+          to={`${path}/$email`}
         />
-      )
-    }
-  />
+      </Route>
+
+    </React.Fragment>
+  )
 } 
 
-export function PrivateRoute({ pageContract, reduxData , ...rest }) {
+export function PrivatePageRoute({ pageContract, reduxData , ...rest }) {
 
     const auth = useSelector((state) => state.mainData.userServiceModel.userData.data.token);
-
     const Component = (auth) ? initPage(pageContract ,reduxData ) : null;
 
-    return <Route
+    return <PrivateRoute {...rest}>
+        <Component />
+    </PrivateRoute>
+}
+
+
+function PrivateRoute ({ children , ...rest}) {
+  const auth = useSelector((state) => state.mainData.userServiceModel.userData.data.token);
+
+  return <Route
       {...rest}
       render={({ location }) =>
         auth ? (
-          <Component />
+          children
         ) : (
           <Redirect
             to={{
@@ -78,6 +94,7 @@ export function PrivateRoute({ pageContract, reduxData , ...rest }) {
       }
     />
 }
+
 
 function initPage(pageContract , reduxData) {
   

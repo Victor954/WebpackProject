@@ -17,7 +17,6 @@ export default function LoginMainComponent(props) {
 
     const dispatch = useDispatch();
     const history = useHistory();
-    console.log(history);
     const loginingData = useSelector((state) => state.loginPageData.authorizationServiceModel.loginingData.data);
     const loadingLoginingData = useSelector((state) => state.loginPageData.authorizationServiceModel.loginingData.loading);
 

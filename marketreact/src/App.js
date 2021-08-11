@@ -9,7 +9,7 @@ import MainContract from './services/mainService'
 import React from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Switch} from "react-router-dom";
-import { LoaderRoute, PrivateRoute , Redirector , PriveteUserRoute } from './helpers/routing/ReduxRoute';
+import { LoaderRoute , Redirector , PriveteUserRoute } from './helpers/routing/ReduxRoute';
 import { getReduxData } from './helpers/GenerateStore';
 
 import { create } from 'jss';
@@ -37,8 +37,7 @@ export default function App(props) {
           <HeaderContract.PageComponent contracts={loadPagesContracts} />
           <Switch>
             <Redirector>
-
-              <PriveteUserRoute exact path="/cart/:email" pageContract={CartContract} reduxData={data} />
+              <PriveteUserRoute path="/cart" pageContract={CartContract} reduxData={data} />
               <LoaderRoute exact path="/" pageContract={HomeContract} reduxData={data} />
               <LoaderRoute exact path="/login" pageContract={LoginContract} reduxData={data} />
             </Redirector>
