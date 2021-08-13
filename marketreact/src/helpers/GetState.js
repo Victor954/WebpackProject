@@ -1,0 +1,1 @@
+export  const userSerivce = (state) => state.mainData.userServiceModel;

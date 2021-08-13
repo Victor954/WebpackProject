@@ -13,7 +13,7 @@ export function LoaderRoute ({pageContract , reduxData , ...rest}) {
     </Route>)
 }
 
-export function Redirector({children}) {
+export function Redirector(props) {
 
   const location = useLocation();
   const routingModel = useSelector(state => state.mainData.mainServiceModel.redirectData);
@@ -34,18 +34,22 @@ export function Redirector({children}) {
     />);
   }
 
-  return children
+  return null;
 }
 
 function RouteEqualsEmail ({ Component , path  }) {
 
   const { email } = useParams();
   const user = useSelector((state) => state.mainData.userServiceModel.userData.data);
+  const location = useLocation();
 
   if(email !== user.email) {
 
     return <Redirect
-        to={`${path}/${user.email}`}
+        to={{
+          pathname: `${path}/${user.email}`,
+          state: { from: location }
+        }}
       />
   }
 
@@ -64,13 +68,10 @@ export function PriveteUserRoute({pageContract, reduxData , path , ...rest}) {
       <PrivateRoute { ...{ path: `${path}/:email` , ...rest } }>
         <RouteEqualsEmail Component={Component} path={path}/>
       </PrivateRoute>
-
-      <Route exact path={[path , `${path}/`]}>
-        <Redirect
-          to={`${path}/$email`}
-        />
+      
+      <Route exact path={[ `${path}/` , `${path}/` ]}>
+        <Redirect to={`${path}/$email`}/>
       </Route>
-
     </React.Fragment>
   )
 } 
@@ -89,8 +90,7 @@ export function PrivatePageRoute({ pageContract, reduxData , ...rest }) {
 function PrivateRoute ({ children , ...rest}) {
   const auth = useSelector((state) => state.mainData.userServiceModel.userData.data.token);
 
-  return <Route
-      {...rest}
+  return <Route path={rest.path}
       render={({ location }) =>
         auth ? (
           children

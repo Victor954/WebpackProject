@@ -2,7 +2,7 @@ import { put, takeLatest , call } from 'redux-saga/effects'
 import * as actionsCreator from './AuthActionsCreator';
 import { FETCH_LOGINING_REQUEST  , FETCH_CHECK_UNIQUE_EMAIL_REQUEST } from './AuthActions';
 import { fetchServiceBase } from '../../helperService/SagaHelper';
-import { getUser } from '../../userService/store/UserActionsCreator'
+import { getUserWithRedirect } from '../../userService/store/UserActionsCreator'
 
 import * as Api from '../api/LoginApi';
 import * as RegisterApi from '../api/RegisterApi';
@@ -20,7 +20,7 @@ function* fetchLogining(action) {
 
         const { pathname } = action.payload;
 
-        yield put (getUser.action_request({pathname}));
+        yield put (getUserWithRedirect.action_request({pathname}));
     }
 }
 
