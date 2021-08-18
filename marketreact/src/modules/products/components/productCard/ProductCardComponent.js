@@ -1,18 +1,34 @@
 import React from 'react';
 
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
+import {
+    Card, 
+    CardHeader, 
+    CardContent, 
+    Typography,
+    CardMedia
+} from '@material-ui/core';
 
-export default function ProductCardComponent ({ title , discription }) {
+import styles from './ProductCardComponent.module.scss';
+
+export default function ProductCardComponent ({ title , discription , photo , date }) {
 
     return (
         <div className="col-4">
-        <Card>
+        <Card className={styles['card-product']}>
             <CardHeader title={title}/>
             <CardContent>
-                <Typography variant="body2" color="textSecondary" component="p">
+
+                <CardMedia 
+                    classes={{ root: styles['image-card-product']} }
+                    image={photo}
+                    title="Paella dish"
+                />
+
+                <Typography 
+                    className={styles['discription-card-product']} 
+                    variant="body2" 
+                    color="textSecondary" 
+                    component="p">
                     {discription}
                 </Typography>
             </CardContent>
