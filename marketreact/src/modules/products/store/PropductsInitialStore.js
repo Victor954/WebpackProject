@@ -1,1 +1,3 @@
-export const productsStore = [];
+export const productsFilterState = {
+    title: '',
+};

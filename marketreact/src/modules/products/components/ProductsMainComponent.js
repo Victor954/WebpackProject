@@ -1,36 +1,33 @@
 import React from 'react';
 import Card from './productCard/ProductCardComponent';
+import { useDispatch , useSelector } from 'react-redux'
+import { productSerivce , productModule} from '../../../helpers/GetState';
+import { fetch_products_request_action } from '../../../services/productService/store/ProductActionsCreator';
 
 import { Pagination } from '@material-ui/lab';
+import { CircularProgress } from '@material-ui/core';
 
 export default function MainProductComponent(props) {
 
+    const dispatch = useDispatch();
+
+    const postData = useSelector(state => productSerivce(state).productsData);
+    const paginationData = useSelector(state => productSerivce(state).paginationData);
+    const filterData = useSelector(state => productModule(state).filterData)
+
     const [page , setPage] = React.useState(1);
 
-    const getPost = (index) => ({
-        id: index, 
-        title: `Test ${index}`,
-        discription: `Test discription ${index}`,
-        photo: '/productsModule/images/image.jpg',
-        date: new Date(1995 + index, 11, 17)
-    });
+    React.useEffect(() => {
 
-    const data = {
-        posts: [...Array(100).keys()].map(index => getPost(index)),
-        pagination: {
-            page: 1,
-            count: 100,
-            countAt: 20,
-            countPages() { 
-                Math.ceil(this.count / this.countAt)
-            }
-        },
-        filter: {
-            name: '',
-            minPrice: 0,
-            maxPrice: 1000
-        }
-    }
+        console.log({
+            postData,
+            paginationData,
+            filterData
+        });
+
+        dispatch(fetch_products_request_action({filter: filterData , page: page}));
+
+    }, [dispatch]);
 
 
     const onChangePaginationHandler = (event , value) => {
@@ -38,18 +35,28 @@ export default function MainProductComponent(props) {
         setPage(value);
     }
 
+    if(postData.loading) {
+
+        return (
+            <div className="container">
+
+                <CircularProgress />
+            </div>
+        )
+    }
+
     return (
         <div className="container">
 
             <div className="row">
                 { 
-                    data.posts.map(postData => <Card key={postData.id} { ...postData } />) 
+                    postData.data.map(postData => <Card key={postData.id} { ...postData } />) 
                 }
             </div>
 
             <div className="row">
                 <div className="col-12">
-                    <Pagination count={data.pagination.countPages()} page={page} onChange={onChangePaginationHandler} />
+                    <Pagination count={paginationData.countPage} page={page} onChange={onChangePaginationHandler} />
                 </div>
             </div>
 

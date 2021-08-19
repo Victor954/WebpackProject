@@ -1,17 +1,16 @@
-import { TEST_PRODUCTS_MODULE } from './ProductsActions';
 import { combineReducers } from 'redux';
-import { productsStore } from './PropductsInitialStore';
 
-function propductsReducer (state = productsStore, action){
+import * as Actions from './ProductsActions';
+import * as State from './PropductsInitialStore';
+
+function filterProductsReducer (state = State.productsFilterState , action){
 
     switch(action.type){
-        case TEST_PRODUCTS_MODULE:
-            return state;
         default:
             return state;
     }
 }
 
 export default combineReducers({
-    localModuleStore: propductsReducer
+    filterData: filterProductsReducer
 });

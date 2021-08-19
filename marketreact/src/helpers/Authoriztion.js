@@ -9,9 +9,13 @@ export function Authorization ({ children }) {
     const user = useSelector(state => userSerivce(state).userData.data)
     const dispatch = useDispatch();
 
-    React.useEffect(() => {
+    const fetchUser = React.useCallback(() => {
         dispatch(getUser.action_request());
-    });
+    }, [dispatch]);
+
+    React.useEffect(() => {
+        fetchUser()
+    }, [fetchUser]);
 
     if(user.token) {
         return children;

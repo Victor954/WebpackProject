@@ -3,7 +3,7 @@ import { combineReducers } from 'redux';
 import * as Actions from './PropductActions';
 import * as State from './ProductInitialState';
 
-const propductsLoadReducer = (state = State.loadProductsState, action) => {
+const propductsLoadReducer = (state = State.loadProductState, action) => {
 
     switch(action.type){
         case Actions.FETCH_LOAD_PRODUCTS_SUCCEEDED:
@@ -17,19 +17,17 @@ const propductsLoadReducer = (state = State.loadProductsState, action) => {
     }
 }
 
-const propductsAddReducer = (state = State.loadProductsState, action) => {
+const paginationReducer = (state = State.paginationProductState , action) => {
 
-    switch(action.type){
-        case Actions.FETCH_ADD_PRODUCT_SUCCEEDED:
-            return action.payload;
-        case Actions.FETCH_ADD_PRODUCT_FAILED:
-            return  { ...state , errorLoading: action.payload };
+    switch(action.type) {
+
         default:
             return state;
     }
 }
 
+
 export default combineReducers({
-    loadedProduts: propductsLoadReducer,
-    addedProduct: propductsAddReducer
+    productsData: propductsLoadReducer,
+    paginationData: paginationReducer
 });

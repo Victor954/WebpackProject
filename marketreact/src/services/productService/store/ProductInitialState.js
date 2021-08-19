@@ -1,9 +1,16 @@
 import { getState } from '../../helperService/StateHelper';
 
-export const loadProductsState = getState([]);
+export const loadProductState = getState([]);
 
-export const addProductState = getState({
-    id: 0,
+export const paginationProductState = {
+    page: 1, 
+    count: 0,
+    countAtPage: 20,
+    countPage: 0
+};
+
+export const filterProductState = {
     title: '',
-    discription: ''
-});
+    maxPrice: 1000,
+    minPrice: 0
+};

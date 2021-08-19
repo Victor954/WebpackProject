@@ -8,9 +8,9 @@ export const loadProducts = getActions({
     loadingType: Actions.LOADING_LOAD_PRODUCTS
 })
 
-export const addProduct = getActions({
-    failedType: Actions.FETCH_ADD_PRODUCT_FAILED,
-    succeededType: Actions.FETCH_ADD_PRODUCT_SUCCEEDED,
-    requestType: Actions.FETCH_ADD_PRODUCT_REQUEST,
-    loadingType: Actions.LOADING_ADD_PRODUCT
-})
+export const fetch_products_request_action = (value) => {
+    return {
+        payload: value,
+        type: Actions.FETCH_PRODUCTS_REQUEST
+    }
+}
