@@ -8,9 +8,3 @@ export const paginationProductState = {
     countAtPage: 20,
     countPage: 0
 };
-
-export const filterProductState = {
-    title: '',
-    maxPrice: 1000,
-    minPrice: 0
-};

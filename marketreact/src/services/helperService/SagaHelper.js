@@ -19,3 +19,21 @@ export function* fetchServiceBase({apiMethod , payload ,action_loading , action_
     }
 
 }
+
+export function* fetchModelBase({model ,action_loading , action_succeeded  , action_failed}) {
+
+    try {
+        yield put(action_loading(true));
+
+       yield put(action_loading(false));
+       yield put(action_succeeded(model));
+
+       return model;
+
+    } catch (e) {
+       yield put(action_failed(e.message));
+
+       return e;
+    }
+
+}

@@ -1,5 +1,15 @@
 export async function GetProductsRequest({filter , page}) {
    
+   fetch('https://localhost:5001/Product/GetProducts').then(response => {
+      return response.json();
+   })
+   .then((data) => {
+      console.log(data);
+   })
+   .catch(error => {
+       console.log(error);
+   });
+
    const getPost = (index) => ({
       id: index, 
       title: `Test ${index}`,
@@ -17,14 +27,19 @@ export async function GetProductsRequest({filter , page}) {
       const filtering = posts.filter(postData => postData.title.indexOf(title) > -1);
 
       const paginationData = {
-         page:1,
+         page:page,
          count:0,
          countAtPage:20,
          countPage:0
       }
 
+      const data = {
+         data: filtering.slice(page - 1 * 20,20),
+         paginationData:  paginationData
+      }
+
        setTimeout(() => {
-          reslove(filtering);
+          reslove(data);
        } , 2000);
     });
  }
