@@ -1,15 +1,12 @@
+import { fetchAddress } from '../../../../package.json';
+
 export async function GetProductsRequest({filter , page}) {
    
-   fetch('https://localhost:44389/Product/GetProducts').then(response => {
-      return response.json();
-   })
-   .then((data) => {
-      console.log(data);
-   })
-   .catch(error => {
-       console.log(error);
-   });
+   const data  = await  fetch(`${fetchAddress}/Product/GetProducts`).then(response => response.json());
 
+   console.log(data);
+
+   
    const getPost = (index) => ({
       id: index, 
       title: `Test ${index}`,

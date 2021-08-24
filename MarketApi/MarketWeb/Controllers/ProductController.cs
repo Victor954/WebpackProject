@@ -17,7 +17,7 @@ namespace MarketApi.Controllers
         {
             this.productService = productService;
         }
-
+        
         [HttpGet]
         public async Task<Product[]> GetProducts() 
         {
