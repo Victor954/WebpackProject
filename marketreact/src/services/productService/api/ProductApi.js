@@ -1,6 +1,6 @@
 export async function GetProductsRequest({filter , page}) {
    
-   fetch('https://localhost:5001/Product/GetProducts').then(response => {
+   fetch('https://localhost:44389/Product/GetProducts').then(response => {
       return response.json();
    })
    .then((data) => {
