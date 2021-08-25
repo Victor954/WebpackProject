@@ -1,10 +1,8 @@
 import { getState } from '../../helperService/StateHelper';
 
-export const loadProductState = getState([]);
-
-export const paginationProductState = {
-    page: 1, 
+export const loadProductState = getState({
     count: 0,
-    countAtPage: 20,
-    countPage: 0
-};
+    data: [],
+    page: 1,
+    pageCount: 0,
+});

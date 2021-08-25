@@ -2,7 +2,7 @@ import React from 'react';
 import Card from './productCard/ProductCardComponent';
 import { useDispatch , useSelector } from 'react-redux'
 import { productSerivce , productModule} from '../../../helpers/GetState';
-import { fetch_products_request_action } from '../../../services/productService/store/ProductActionsCreator';
+import { loadProducts } from '../../../services/productService/store/ProductActionsCreator';
 
 import { Pagination } from '@material-ui/lab';
 import { CircularProgress } from '@material-ui/core';
@@ -11,31 +11,31 @@ export default function MainProductComponent(props) {
 
     const dispatch = useDispatch();
 
-    const postData = useSelector(state => productSerivce(state).productsData);
-    const paginationData = useSelector(state => productSerivce(state).paginationData);
+
+    const { loading , data } = useSelector(state => productSerivce(state).productsData);
     const filterData = useSelector(state => productModule(state).filterData)
 
-    const [page , setPage] = React.useState(1);
+    const { data: products , page , pageCount } = data;
+
 
     React.useEffect(() => {
 
         console.log({
-            postData,
-            paginationData,
+            data,
             filterData
         });
 
-        dispatch(fetch_products_request_action({filter: filterData , page: page}));
+        dispatch(loadProducts.action_request({filter: filterData , page: page}));
 
     }, [dispatch]);
 
 
     const onChangePaginationHandler = (event , value) => {
 
-        setPage(value);
+        dispatch(loadProducts.action_request({filter: filterData , page: value}));
     }
 
-    if(postData.loading) {
+    if(loading) {
 
         return (
             <div className="container">
@@ -50,13 +50,13 @@ export default function MainProductComponent(props) {
 
             <div className="row">
                 { 
-                    postData.data.map(postData => <Card key={postData.id} { ...postData } />) 
+                    products.map(postData => <Card key={postData.id} { ...postData } />) 
                 }
             </div>
 
             <div className="row">
                 <div className="col-12">
-                    <Pagination count={paginationData.countPage} page={page} onChange={onChangePaginationHandler} />
+                    <Pagination count={pageCount} page={page} onChange={onChangePaginationHandler} />
                 </div>
             </div>
 

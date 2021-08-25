@@ -17,17 +17,6 @@ const propductsLoadReducer = (state = State.loadProductState, action) => {
     }
 }
 
-const paginationReducer = (state = State.paginationProductState , action) => {
-
-    switch(action.type) {
-
-        default:
-            return state;
-    }
-}
-
-
 export default combineReducers({
-    productsData: propductsLoadReducer,
-    paginationData: paginationReducer
+    productsData: propductsLoadReducer
 });

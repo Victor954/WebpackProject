@@ -1,24 +1,20 @@
-import { takeLatest , call } from 'redux-saga/effects'
+import { takeLatest , call ,put } from 'redux-saga/effects'
 import * as actionsCreator from './ProductActionsCreator';
-import { FETCH_PRODUCTS_REQUEST } from './PropductActions';
+import * as actions from './PropductActions';
 import * as Api from '../api/ProductApi';
-import { fetchModelBase } from '../../helperService/SagaHelper';
 
 function* fetchLoadProduts(action) {
 
     try {
-        const { data , paginationData } = yield call(Api.GetProductsRequest , action.payload);
 
-        fetchModelBase({
-          model: data,
-          ...actionsCreator.loadProducts
-        })
+        const data = yield call(Api.GetProductsRequest , action.payload);
+        yield put(actionsCreator.loadProducts.action_succeeded(data));
     }
     catch (e){
-
+      yield put(actionsCreator.loadProducts.action_failed(e.message));
     }
  }
 
  export default function* productsSaga() {
-   yield takeLatest(FETCH_PRODUCTS_REQUEST, fetchLoadProduts);
+   yield takeLatest(actions.FETCH_LOAD_PRODUCTS_REQUEST, fetchLoadProduts);
  }

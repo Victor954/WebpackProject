@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Services.Models;
+using Services.Models.ModelArgs;
 using Services;
+using MarketApi.Models;
 
 namespace MarketApi.Controllers
 {
@@ -19,9 +21,9 @@ namespace MarketApi.Controllers
         }
         
         [HttpGet]
-        public async Task<Product[]> GetProducts() 
+        public async Task<Pagination<Product>> GetProducts(FilterProductArg filter , int page) 
         {
-            return await productService.GetProductsAsync();
+            return await productService.GetProductsAsync(filter ,page);
         }
     }
 }
