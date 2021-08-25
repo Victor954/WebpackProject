@@ -7,7 +7,6 @@ using Microsoft.Extensions.Logging;
 using Services.Models;
 using Services.Models.ModelArgs;
 using Services;
-using MarketApi.Models;
 
 namespace MarketApi.Controllers
 {
