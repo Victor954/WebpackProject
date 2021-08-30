@@ -17,7 +17,7 @@ namespace Services
             var filteredProducts = GetFilteredData(filter);
 
             var count = filteredProducts.Count();
-            var pageCount = (int)Math.Floor((double)count / countAtPage);
+            var pageCount = (int)Math.Ceiling((double)count / countAtPage);
             var skip = (page - 1) * countAtPage;
 
             return new Pagination<Product>()

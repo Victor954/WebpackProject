@@ -3,11 +3,12 @@ import Card from './productCard/ProductCardComponent';
 import { useDispatch , useSelector } from 'react-redux'
 import { productSerivce , productModule} from '../../../helpers/GetState';
 import { loadProducts } from '../../../services/productService/store/ProductActionsCreator';
+import { action_set_filter_product_module } from '../store/ProductsActionsCreator';
 
-import { Pagination } from '@material-ui/lab';
 import { CircularProgress } from '@material-ui/core';
 import { ErrorServerComponent } from '../../../helpers/components/error/ErrorServerComponet';
 import ProductsTitleFilterComponent from '../components/productFilter/ProductsTitleFilterComponent';
+import ProductsPaginationComponent from './productPagination/ProductsPaginationComponent';
 
 export default function MainProductComponent(props) {
 
@@ -22,19 +23,24 @@ export default function MainProductComponent(props) {
 
     React.useEffect(() => {
 
-        console.log({
-            data,
-            filterData
-        });
+        applyFilter();
+    }, [dispatch , filterData]);
+
+
+    const onChangedFilterHandler = (name , value) => {
+
+        dispatch(action_set_filter_product_module({name , value}));
+    }
+
+    const onChangePaginationHandler = (value) => {
+
+        applyFilter(value);
+    }
+
+
+    function applyFilter (page = 1) { 
 
         dispatch(loadProducts.action_request({filter: filterData , page: page}));
-
-    }, [dispatch]);
-
-
-    const onChangePaginationHandler = (event , value) => {
-
-        dispatch(loadProducts.action_request({filter: filterData , page: value}));
     }
 
     if(loading) {
@@ -51,9 +57,8 @@ export default function MainProductComponent(props) {
         <ErrorServerComponent data={errorLoading}>
             <div className="container">
 
-
-                <ProductsTitleFilterComponent />
-
+                <ProductsTitleFilterComponent 
+                    onChangedFilterTitle={onChangedFilterHandler} />
 
                 <div className="row">
                 { 
@@ -61,12 +66,10 @@ export default function MainProductComponent(props) {
                 }
                 </div>
 
-                <div className="row">
-                    <div className="col-12">
-                        <Pagination count={pageCount} page={page} onChange={onChangePaginationHandler} />
-                    </div>
-                </div>
-
+                <ProductsPaginationComponent 
+                    onChangePagination={onChangePaginationHandler}
+                    page={page}
+                    pageCount={pageCount} />
             </div>
         </ErrorServerComponent>
     )

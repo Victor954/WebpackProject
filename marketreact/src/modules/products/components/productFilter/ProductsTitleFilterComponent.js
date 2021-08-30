@@ -1,23 +1,26 @@
 import React from 'react';
 import styles from './ProductsTitleFilterComponent.module.scss';
+import { productModule} from '../../../../helpers/GetState';
 import { TextField , InputAdornment} from '@material-ui/core';
+import { useSelector } from 'react-redux'
 import SearchIcon from '@material-ui/icons/Search';
 
-export default function ProductsTitleFilterComponent(props) {
+export default function ProductsTitleFilterComponent({onChangedFilterTitle}) {
 
-    const [value , setValue] = React.useState('');
+    const { title } = useSelector(state => productModule(state).filterData)
 
-    const changedFilterTitleHandler = (event) => { 
+    const changedFilterTitleHandler = (e) => { 
 
-        const { value } = event;
-        setValue(value);
+        const { value } = e.target;
+        onChangedFilterTitle('title' , value);
     }
 
     return (
         <TextField 
             label="Поиск по названию" 
+            classes={{root: `${styles['input-filed-root']} ${styles['search-title-fileld']}`}}
             variant="outlined" 
-            value={value} 
+            value={title} 
             onChange={changedFilterTitleHandler}
             size="small"
             InputProps={{

@@ -3,16 +3,36 @@ import { CardMedia } from '@material-ui/core';
 
 export default function ProductCardImageComponent ({ data , styles }) {
 
-    const getScrImage = () => {
+    const [isNotExistImage, setIsLoadedImage] = React.useState(true)
 
-        const isNotLoaded = [
+    const getIsLoaedImage = () => {
+
+        return [
             data === null,
             data === undefined,
             typeof data !== 'string'
         ].some(is => is);
+    }
 
-        if(isNotLoaded) {
-            return '/public/productsModule/images/image.jpg'
+    React.useEffect(() => {
+        
+        setIsLoadedImage(getIsLoaedImage());
+    }, [])
+
+
+    const getTitle = (isNotExistImage) => {
+        
+        if(isNotExistImage) {
+            return 'Нет изображения'
+        }
+
+        return 'Категория фото';
+    }
+
+    const getScrImage = (isNotExistImage) => {
+
+        if(isNotExistImage) {
+            return `${process.env.PUBLIC_URL}/productsModule/images/image.jpg`
         }
 
         return data;
@@ -21,8 +41,8 @@ export default function ProductCardImageComponent ({ data , styles }) {
     return (
         <CardMedia 
         classes={{ root: styles['image-card-product']} }
-        image={getScrImage()}
-        title="Paella dish"
+        image={getScrImage(isNotExistImage)}
+        title={getTitle(isNotExistImage)}
         />
     )
 }
