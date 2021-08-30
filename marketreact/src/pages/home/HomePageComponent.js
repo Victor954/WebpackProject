@@ -1,5 +1,6 @@
 import React from "react";
 import Injection from "./index";
+import { TitleComponent } from '../../helpers/components/title/TitleComponent';
 
 export default function HomePage(props) {
 
@@ -7,7 +8,7 @@ export default function HomePage(props) {
 
     return (
         <div>
-            <h1>Home</h1>
+            <TitleComponent text="Home" />
             <MainProductsComponent/>
         </div>
     )

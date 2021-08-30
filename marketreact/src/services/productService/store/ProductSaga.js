@@ -10,8 +10,8 @@ function* fetchLoadProduts(action) {
         const data = yield call(Api.GetProductsRequest , action.payload);
         yield put(actionsCreator.loadProducts.action_succeeded(data));
     }
-    catch (e){
-      yield put(actionsCreator.loadProducts.action_failed(e.message));
+    catch (exception){
+      yield put(actionsCreator.loadProducts.action_failed(exception));
     }
  }
 

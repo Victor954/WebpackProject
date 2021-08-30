@@ -4,10 +4,10 @@ import {
     Card, 
     CardHeader, 
     CardContent, 
-    Typography,
-    CardMedia
+    Typography
 } from '@material-ui/core';
 
+import ProductCardImageComponent from './productCardImage/ProductCardImageComponent';
 import styles from './ProductCardComponent.module.scss';
 
 export default function ProductCardComponent ({ title , discription , photo , date }) {
@@ -18,11 +18,7 @@ export default function ProductCardComponent ({ title , discription , photo , da
             <CardHeader title={title}/>
             <CardContent>
 
-                <CardMedia 
-                    classes={{ root: styles['image-card-product']} }
-                    image={photo}
-                    title="Paella dish"
-                />
+                <ProductCardImageComponent data={photo} styles={styles} />
 
                 <Typography 
                     className={styles['discription-card-product']} 

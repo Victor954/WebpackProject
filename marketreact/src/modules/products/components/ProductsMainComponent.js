@@ -6,13 +6,15 @@ import { loadProducts } from '../../../services/productService/store/ProductActi
 
 import { Pagination } from '@material-ui/lab';
 import { CircularProgress } from '@material-ui/core';
+import { ErrorServerComponent } from '../../../helpers/components/error/ErrorServerComponet';
+import ProductsTitleFilterComponent from '../components/productFilter/ProductsTitleFilterComponent';
 
 export default function MainProductComponent(props) {
 
     const dispatch = useDispatch();
 
 
-    const { loading , data } = useSelector(state => productSerivce(state).productsData);
+    const { loading , data , errorLoading } = useSelector(state => productSerivce(state).productsData);
     const filterData = useSelector(state => productModule(state).filterData)
 
     const { data: products , page , pageCount } = data;
@@ -46,20 +48,26 @@ export default function MainProductComponent(props) {
     }
 
     return (
-        <div className="container">
+        <ErrorServerComponent data={errorLoading}>
+            <div className="container">
 
-            <div className="row">
+
+                <ProductsTitleFilterComponent />
+
+
+                <div className="row">
                 { 
                     products.map(postData => <Card key={postData.id} { ...postData } />) 
                 }
-            </div>
-
-            <div className="row">
-                <div className="col-12">
-                    <Pagination count={pageCount} page={page} onChange={onChangePaginationHandler} />
                 </div>
-            </div>
 
-        </div>
+                <div className="row">
+                    <div className="col-12">
+                        <Pagination count={pageCount} page={page} onChange={onChangePaginationHandler} />
+                    </div>
+                </div>
+
+            </div>
+        </ErrorServerComponent>
     )
 } 
