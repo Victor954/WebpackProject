@@ -4,6 +4,7 @@ using Services.Models.ModelArgs;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using System.Linq;
+using Services.Models.ModelEntity;
 
 namespace Services
 {
@@ -35,8 +36,7 @@ namespace Services
                 Id = number,
                 Title = $"Title{number}",
                 Discription = $"Discription{number}",
-                Price = number * 100,
-                Photo = 0
+                Price = number * 100
             });
 
             return //db.Products

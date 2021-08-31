@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Services;
@@ -9,9 +10,10 @@ using Services;
 namespace Services.Migrations
 {
     [DbContext(typeof(MarketContext))]
-    partial class MarketContextModelSnapshot : ModelSnapshot
+    [Migration("20210831113317_AddTypeProduct")]
+    partial class AddTypeProduct
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -65,24 +67,6 @@ namespace Services.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("CategoriesProducts");
-                });
-
-            modelBuilder.Entity("Services.Models.ModelEntity.HierarchyTypesProduct", b =>
-                {
-                    b.Property<long>("ParentId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("ChildId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("Id")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("ParentId", "ChildId");
-
-                    b.HasIndex("ChildId");
-
-                    b.ToTable("HierarchyTypesProduct", "TypeProduct");
                 });
 
             modelBuilder.Entity("Services.Models.ModelEntity.ParametersProduct", b =>
@@ -180,25 +164,6 @@ namespace Services.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Services.Models.ModelEntity.HierarchyTypesProduct", b =>
-                {
-                    b.HasOne("Services.Models.ModelEntity.TypeProduct", "Child")
-                        .WithMany("Parents")
-                        .HasForeignKey("ChildId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Services.Models.ModelEntity.TypeProduct", "Parent")
-                        .WithMany("Children")
-                        .HasForeignKey("ParentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Child");
-
-                    b.Navigation("Parent");
-                });
-
             modelBuilder.Entity("Services.Models.ModelEntity.ParametersProduct", b =>
                 {
                     b.HasOne("Services.Models.ModelEntity.Product", "Product")
@@ -213,13 +178,6 @@ namespace Services.Migrations
             modelBuilder.Entity("Services.Models.ModelEntity.Product", b =>
                 {
                     b.Navigation("ParameterProducts");
-                });
-
-            modelBuilder.Entity("Services.Models.ModelEntity.TypeProduct", b =>
-                {
-                    b.Navigation("Children");
-
-                    b.Navigation("Parents");
                 });
 #pragma warning restore 612, 618
         }
