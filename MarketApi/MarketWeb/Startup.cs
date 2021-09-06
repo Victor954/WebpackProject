@@ -12,7 +12,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Services;
-
+using System.Text.Json.Serialization;
+using Newtonsoft.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace MarketApi
 {
@@ -32,10 +34,11 @@ namespace MarketApi
             services.AddDbContext<MarketContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddControllers();
-            services.AddSwaggerGen(c =>
+            services.AddControllers()
+            .AddNewtonsoftJson(jsonOptions =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "MarketApi", Version = "v1" });
+                jsonOptions.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                jsonOptions.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Serialize;
             });
 
             services.AddScoped<ProductService>();
@@ -48,8 +51,6 @@ namespace MarketApi
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MarketApi v1"));
             }
 
             app.UseHttpsRedirection();
