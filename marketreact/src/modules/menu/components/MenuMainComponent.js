@@ -13,41 +13,23 @@ import styles from './MenuMainComponent.module.scss';
 
 function MenuTreeTypesComponent({ data , interaction = 0}) {
 
-    const getRefCode = (refId , collection = data) => {
+    const getPath = (node , path = '') => {
 
-        for(const {$id , code , children} in collection ) { 
-
-            if(refId === $id) {
-                return code;
-            }
-
-            getRefCode(refId , children);
+        if(node !== null) {
+            return getPath(node.parent , `/${node.code}${path}`);
         }
 
-        return '';
-    }
-
-    const getPath = (nodeTree, codes = []) => {
-
-        if(nodeTree.parent) {
-            console.log(getRefCode(nodeTree.parent.$ref));
-        }
-
-        return `product/${codes.reverse().join('/')}`;
-    }
-
-    if(!data) {
-        return null;
+        return `products${path}`;
     }
 
     return(
         <List className={interaction > 0 ? '' : styles['menu-products-list']}>
             {
-                data.map(({name , code , children , parent}) => {
+                data.map((node) => {
                     return (
-                        <ListItem className={styles['menu-list-item']} key={code}>
-                            <Link to={getPath({code , parent})}>{name}</Link>        
-                            { children.length > 0 ? MenuTreeTypesComponent({data: children , interaction: interaction + 1}) : null }
+                        <ListItem className={styles['menu-list-item']} key={node.code}>
+                            <Link to={getPath(node)}>{node.name}</Link>        
+                            { node.children.length > 0 ? MenuTreeTypesComponent({data: node.children ,interaction: interaction + 1}) : null }
                         </ListItem>
                     );
                 })
@@ -60,31 +42,36 @@ export default function MenuMainComponent({ contracts }) {
 
     const dispatch = useDispatch();
     const { data } = useSelector(state => productTypeService(state).productTypeTreeData);
-    const treeData = [];
+
+    const [treeData, setTreeData] = React.useState([]);
+
+    React.useEffect(() => {
+
+        const array = setParentsTree(null ,[...data]);
+
+        setTreeData(array);
+
+    }, [data]);
 
     React.useEffect(() => {
 
         loadMenuProductTypesTree();
     }, [dispatch]);
 
-    React.useEffect(() => {
-
-        data.forEach(node => {
-            
-        });
-
-    }, [data]);
-
-    function loop(parent , child) {
-
-        if(parent !== null) {
-            
-        }
-    }
-
     function loadMenuProductTypesTree() {
 
         dispatch(loadProductTypesTree.action_request());
+    }
+
+    function setParentsTree(parent = null, data = treeData) {
+
+        for(const node of data) {
+
+            node.parent =  (parent) ? {...parent , children: null } : null;
+            setParentsTree(node , node.children)
+        }
+
+        return data;
     }
 
     const getMenuItems = () => {
@@ -112,6 +99,8 @@ export default function MenuMainComponent({ contracts }) {
                         {  getMenuItems() }
                     </List>
 
+                    <MenuTreeTypesComponent data={treeData}/> 
+ 
                     <UserSector />
                 </Toolbar>
             </AppBar>

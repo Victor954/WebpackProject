@@ -44,144 +44,135 @@ namespace Services
             var man = new TreeItem<TypeProduct>()
             {
                 Name = "Мужчинам",
-                Code = "Man"
+                Code = "Man",
+                Children = new TreeItem<TypeProduct>[]
+                {
+                    new TreeItem<TypeProduct>()
+                    {
+                        Name = "Обувь",
+                        Code = "Boots",
+                        Children = new TreeItem<TypeProduct>[]
+                        {
+                            new TreeItem<TypeProduct>
+                            {
+                                Name = "Кроссовки",
+                                Code = "Sneakers",
+                            },
+                            new TreeItem<TypeProduct>
+                            {
+                                Name = "Туфли",
+                                Code = "Shoes"
+                            }
+
+                        }
+                    },
+                    new TreeItem<TypeProduct>()
+                    {
+                        Name = "Верхняя одежда",
+                        Code = "BottomСlothes"
+                    },
+                    new TreeItem<TypeProduct>()
+                    {
+                        Name = "Нижняя одежда",
+                        Code = "TopСlothes",
+                        Children = new TreeItem<TypeProduct>[]
+                        {
+                            new TreeItem<TypeProduct>
+                            {
+                                Name = "Брюки",
+                                Code = "Pants"
+                            },
+                            new TreeItem<TypeProduct>
+                            {
+                                Name = "Джинсы",
+                                Code = "Jeans"
+                            },
+                            new TreeItem<TypeProduct>
+                            {
+                                Name = "Шорты",
+                                Code = "Shorts"
+                            },
+                        }
+                    },
+                    new TreeItem<TypeProduct>()
+                    {
+                        Name = "Аксессуары",
+                        Code = "Accessories"
+                    }
+                }
             };
 
             var woman = new TreeItem<TypeProduct>()
             {
                 Name = "Женщинам",
-                Code = "Woman"
-            };
+                Code = "Woman",
+                Children = new TreeItem<TypeProduct>[]
+                {
+                    new TreeItem<TypeProduct>()
+                    {
+                        Name = "Обувь",
+                        Code = "Boots",
+                        Children = new TreeItem<TypeProduct>[]
+                        {
+                            new TreeItem<TypeProduct>
+                            {
+                                Name = "Кроссовки",
+                                Code = "Sneakers",
+                            },
+                            new TreeItem<TypeProduct>
+                            {
+                                Name = "Туфли",
+                                Code = "Shoes"
+                            }
 
-            var manChilds = new TreeItem<TypeProduct>[]
-            {
-                new TreeItem<TypeProduct>()
-                {
-                    Name = "Обувь",
-                    Code = "Boots",
-                    Parent = man
-                },
-                new TreeItem<TypeProduct>()
-                {
-                    Name = "Верхняя одежда",
-                    Code = "BottomСlothes",
-                    Parent = man,
-                },
-                new TreeItem<TypeProduct>()
-                {
-                    Name = "Нижняя одежда",
-                    Code = "TopСlothes",
-                    Parent = man
-                },
-                new TreeItem<TypeProduct>()
-                {
-                    Name = "Аксессуары",
-                    Code = "Accessories",
-                    Parent = man
+                        }
+                    },
+                    new TreeItem<TypeProduct>()
+                    {
+                        Name = "Верхняя одежда",
+                        Code = "BottomСlothes"
+                    },
+                    new TreeItem<TypeProduct>()
+                    {
+                        Name = "Нижняя одежда",
+                        Code = "TopСlothes",
+                        Children = new TreeItem<TypeProduct>[]
+                        {
+                            new TreeItem<TypeProduct>
+                            {
+                                Name = "Брюки",
+                                Code = "Pants"
+                            },
+                            new TreeItem<TypeProduct>
+                            {
+                                Name = "Джинсы",
+                                Code = "Jeans"
+                            },
+                            new TreeItem<TypeProduct>
+                            {
+                                Name = "Шорты",
+                                Code = "Shorts"
+                            },
+                            new TreeItem<TypeProduct>
+                            {
+                                Name = "Юбки",
+                                Code = "Skirts",
+                            }
+                        }
+                    },
+                    new TreeItem<TypeProduct>()
+                    {
+                        Name = "Аксессуары",
+                        Code = "Accessories"
+                    }
                 }
             };
-
-            var womanChilds = new TreeItem<TypeProduct>[]
-            {
-                new TreeItem<TypeProduct>()
-                {
-                    Name = "Обувь",
-                    Code = "Boots",
-                    Parent = woman
-                },
-                new TreeItem<TypeProduct>()
-                {
-                    Name = "Верхняя одежда",
-                    Code = "BottomСlothes",
-                    Parent = woman
-                },
-                new TreeItem<TypeProduct>()
-                {
-                    Name = "Нижняя одежда",
-                    Code = "TopСlothes",
-                    Parent = woman
-                },
-                new TreeItem<TypeProduct>()
-                {
-                    Name = "Аксессуары",
-                    Code = "Accessories",
-                    Parent = woman,
-                }
-            };
-
-
 
             return new TreeItem<TypeProduct>[]
             {
-            new TreeItem<TypeProduct>
-            {
-                Name = "Кроссовки",
-                Code = "Sneakers",
-                Parent = manChilds[0]
-            },
-            new TreeItem<TypeProduct>
-            {
-                Name = "Туфли",
-                Code = "Shoes",
-                Parent = manChilds[0]
-            },
-
-            new TreeItem<TypeProduct>
-            {
-                Name = "Брюки",
-                Code = "Pants",
-                Parent = manChilds[2]
-            },
-            new TreeItem<TypeProduct>
-            {
-                Name = "Джинсы",
-                Code = "Jeans",
-                Parent = manChilds[2]
-            },
-            new TreeItem<TypeProduct>
-            {
-                Name = "Шорты",
-                Code = "Shorts",
-                Parent = manChilds[2]
-            },
-            new TreeItem<TypeProduct>
-            {
-                Name = "Кроссовки",
-                Code = "Sneakers",
-                Parent = womanChilds[0]
-            },
-            new TreeItem<TypeProduct>
-            {
-                Name = "Туфли",
-                Code = "Shoes",
-                Parent = womanChilds[0]
-            },
-
-            new TreeItem<TypeProduct>
-            {
-                Name = "Брюки",
-                Code = "Pants",
-                Parent = womanChilds[2]
-            },
-            new TreeItem<TypeProduct>
-            {
-                Name = "Джинсы",
-                Code = "Jeans",
-                Parent = womanChilds[2]
-            },
-            new TreeItem<TypeProduct>
-            {
-                Name = "Шорты",
-                Code = "Shorts",
-                Parent = womanChilds[2]
-            },
-            new TreeItem<TypeProduct>
-            {
-                Name = "Юбки",
-                Code = "Skirts",
-                Parent = womanChilds[2]
-            },
-        };
+                man,
+                woman
+            };
         }
     }
 }
