@@ -2,6 +2,7 @@ import HomeContract from './pages/home';
 import LoginContract from './pages/login';
 import HeaderContract from './pages/header';
 import CartContract from './pages/cart';
+import ProductsContract from './pages/products';
 
 import UserContract from './services/userService'
 import MainContract from './services/mainService'
@@ -49,13 +50,14 @@ export default function App(props) {
           <Authorization>
           
           <HeaderContract.PageComponent contracts={loadPagesContracts} />
-  
           <AppController />
           
           <Switch>
               <PriveteUserRoute path="/cart" pageContract={CartContract} reduxData={data} />
               <LoaderRoute exact path="/" pageContract={HomeContract} reduxData={data} />
               <LoaderRoute exact path="/login" pageContract={LoginContract} reduxData={data} />
+              
+              <LoaderRoute path={["/products/:gender/:type/:category" ,"/products/:gender/:type/"]} pageContract={ProductsContract} reduxData={data}/>
           </Switch>
 
           </Authorization>

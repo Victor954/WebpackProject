@@ -10,7 +10,7 @@ import { ErrorServerComponent } from '../../../helpers/components/error/ErrorSer
 import ProductsTitleFilterComponent from '../components/productFilter/ProductsTitleFilterComponent';
 import ProductsPaginationComponent from './productPagination/ProductsPaginationComponent';
 
-export default function MainProductComponent(props) {
+export default function MainProductComponent({routeParams}) {
 
     const dispatch = useDispatch();
 
@@ -40,7 +40,11 @@ export default function MainProductComponent(props) {
 
     function applyFilter (page = 1) { 
 
-        dispatch(loadProducts.action_request({filter: filterData , page: page}));
+        dispatch(loadProducts.action_request({
+            filter: filterData, 
+            routeParams: routeParams, 
+            page: page
+        }));
     }
 
     if(loading) {

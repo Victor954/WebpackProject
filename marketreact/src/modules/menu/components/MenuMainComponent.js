@@ -7,36 +7,9 @@ import { loadProductTypesTree } from '../../../services/productTypeService/store
 import { ShowStateModelEnum } from '../../../helpers/models/ShowModeEnum';
 import { productTypeService } from '../../../helpers/GetState';
 import UserSector from './userSector/UserSectorComponent';
+import MenuTreeTypesComponent from '../components/menuProducts/MenuProductsComponent';
 
 import styles from './MenuMainComponent.module.scss';
-
-
-function MenuTreeTypesComponent({ data , interaction = 0}) {
-
-    const getPath = (node , path = '') => {
-
-        if(node !== null) {
-            return getPath(node.parent , `/${node.code}${path}`);
-        }
-
-        return `products${path}`;
-    }
-
-    return(
-        <List className={interaction > 0 ? '' : styles['menu-products-list']}>
-            {
-                data.map((node) => {
-                    return (
-                        <ListItem className={styles['menu-list-item']} key={node.code}>
-                            <Link to={getPath(node)}>{node.name}</Link>        
-                            { node.children.length > 0 ? MenuTreeTypesComponent({data: node.children ,interaction: interaction + 1}) : null }
-                        </ListItem>
-                    );
-                })
-            }
-        </List>
-    );
-}
 
 export default function MenuMainComponent({ contracts }) {
 

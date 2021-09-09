@@ -1,0 +1,45 @@
+@import '../MenuMainComponent.module.scss';
+
+.menu-products-list {
+    @extend .menu-list;
+    height: 100%;
+
+    .menu-list-item{
+        position: relative;
+
+        ul{
+            display: none;
+            position: absolute;
+            top: 100%;
+            background-color: #f5f5f5;
+            border-top: solid 1px $grey;
+            padding: 0px;
+
+            li {
+                padding-right: 3rem;
+
+                &:hover{
+                    background-color: darken(#f5f5f5, 5%);
+                }
+            }
+
+            ul {
+                top: 0px;
+                left: 100%;
+                border-top: none;
+                border-left: solid 1px $grey;
+                background-color: lighten(#f5f5f5, 2%);
+
+                li {
+                    &:hover{
+                        background-color: darken(lighten(#f5f5f5, 2%), 3%);
+                    }
+                }
+            }
+        }
+
+        &:hover > ul{
+            display: block;
+        }
+    }
+}

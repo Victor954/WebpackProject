@@ -86,7 +86,6 @@ export function PrivatePageRoute({ pageContract, reduxData , ...rest }) {
     </PrivateRoute>
 }
 
-
 function PrivateRoute ({ children , ...rest}) {
   const auth = useSelector((state) => state.mainData.userServiceModel.userData.data.token);
 

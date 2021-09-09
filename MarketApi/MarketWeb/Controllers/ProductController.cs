@@ -21,7 +21,7 @@ namespace MarketApi.Controllers
         }
         
         [HttpGet]
-        public async Task<Pagination<Product>> GetProducts(FilterProductArg filter , int page) 
+        public async Task<Pagination<Product>> GetProducts(FilterProductArg filter, TypesProductArg routeParams, int page) 
         {
             return await productService.GetProductsAsync(filter ,page);
         }
